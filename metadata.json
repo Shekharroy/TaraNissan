@@ -1,0 +1,6 @@
+{
+  "name": "Nissan India",
+  "description": "Tara Nissan authorized vehicle showcase with authentic car images from nissan.in, custom Tara Nissan branding, exact font sizing, specifications, pricing, and shopping tools.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

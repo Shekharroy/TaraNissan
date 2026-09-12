@@ -1,0 +1,374 @@
+@import "./nissan-fonts.css";
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --nissan-red: #c3002f;
+    --nissan-red-hover: #a10027;
+    --nissan-black: #111111;
+    --nissan-dark: #141414;
+    --nissan-gray: #4c4c4c;
+    --nissan-muted: #767676;
+    --nissan-light-gray: #f6f6f6;
+    --nissan-border: #e5e5e5;
+  }
+
+  body {
+    font-family: "Nissan Regular", "Nissan Light", Verdana, Arial, sans-serif;
+    color: #4c4c4c;
+    background-color: #ffffff;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 14px;
+    line-height: 24px;
+    letter-spacing: 0.9px;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "Nissan Bold", "Nissan Regular", Verdana, Arial, sans-serif;
+    font-weight: 700;
+    color: #111111;
+  }
+
+  h1 {
+    font-size: 2.625em;
+    line-height: 1.23;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    font-size: 2em;
+    line-height: 1.31;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  h3 {
+    font-size: 1.5em;
+    line-height: 1.41;
+  }
+
+  p {
+    font-family: "Nissan Regular", "Nissan Light", Verdana, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 24px;
+    letter-spacing: 0.9px;
+    color: #4c4c4c;
+  }
+
+  button, input, select, textarea {
+    font-family: inherit;
+  }
+}
+
+/* Nissan Brand Typography matching reference site exactly */
+.font-nissan-light {
+  font-family: "Nissan Light", Verdana, Arial, sans-serif;
+  font-weight: 300;
+}
+
+.font-nissan-regular {
+  font-family: "Nissan Regular", "Nissan Light", Verdana, Arial, sans-serif;
+  font-weight: 400;
+}
+
+.font-nissan-bold {
+  font-family: "Nissan Bold", "Nissan Regular", Verdana, Arial, sans-serif;
+  font-weight: 700;
+}
+
+/* Reference site font sizes and tracking */
+.nissan-hero-title {
+  font-family: "Nissan Bold", Verdana, Arial, sans-serif;
+  font-size: clamp(32px, 5.2vw, 48px);
+  line-height: 1.15;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.nissan-strapline {
+  font-family: "Nissan Bold", Verdana, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 16px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #c3002f;
+}
+
+.nissan-section-title {
+  font-family: "Nissan Bold", Verdana, Arial, sans-serif;
+  font-size: clamp(24px, 3.5vw, 32px);
+  line-height: 1.25;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #111111;
+}
+
+.nissan-card-title {
+  font-family: "Nissan Bold", Verdana, Arial, sans-serif;
+  font-size: 22px;
+  line-height: 1.3;
+  color: #111111;
+}
+
+.nissan-body-text {
+  font-family: "Nissan Regular", Verdana, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 24px;
+  letter-spacing: 0.9px;
+  color: #4c4c4c;
+}
+
+.nissan-cta-text {
+  font-family: "Nissan Bold", Verdana, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.nissan-label-text {
+  font-family: "Nissan Bold", Verdana, Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1.2;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.nissan-small-text {
+  font-family: "Nissan Regular", Verdana, Arial, sans-serif;
+  font-size: 12px;
+  line-height: 20px;
+  letter-spacing: 0.5px;
+  color: #767676;
+}
+
+/* ==========================================================================
+   MATERIAL UI BUTTON SYSTEM & HOVER STATES
+   Follows Google Material Design 3 / Material UI specifications:
+   - Contained Button (with elevation & active states)
+   - Outlined Button (with hover tint)
+   - Text Button (clean text format with ripple wash)
+   ========================================================================== */
+
+/* 1. Material UI Contained Button (Primary Red) */
+.btn-nissan-primary,
+.btn-mui-contained {
+  background-color: #c3002f;
+  color: #ffffff;
+  font-family: "Nissan Bold", Verdana, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1.25px;
+  text-transform: uppercase;
+  padding: 10px 24px;
+  min-height: 44px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid #c3002f;
+  cursor: pointer;
+  box-shadow: 0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12);
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
+              transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-nissan-primary:hover,
+.btn-mui-contained:hover {
+  background-color: #a10027;
+  border-color: #a10027;
+  color: #ffffff;
+  box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);
+  transform: translateY(-1px);
+}
+
+.btn-nissan-primary:active,
+.btn-mui-contained:active {
+  box-shadow: 0px 5px 5px -3px rgba(0,0,0,0.2), 0px 8px 10px 1px rgba(0,0,0,0.14), 0px 3px 14px 2px rgba(0,0,0,0.12);
+  transform: translateY(1px) scale(0.99);
+}
+
+/* 2. Material UI Outlined Button */
+.btn-nissan-secondary,
+.btn-mui-outlined {
+  background-color: transparent;
+  color: #111111;
+  font-family: "Nissan Bold", Verdana, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1.25px;
+  text-transform: uppercase;
+  padding: 10px 24px;
+  min-height: 44px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid rgba(17, 17, 17, 0.4);
+  cursor: pointer;
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
+              color 250ms cubic-bezier(0.4, 0, 0.2, 1),
+              transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+}
+
+.btn-nissan-secondary:hover,
+.btn-mui-outlined:hover {
+  background-color: rgba(17, 17, 17, 0.04);
+  border-color: #111111;
+  color: #111111;
+  transform: translateY(-1px);
+}
+
+.btn-nissan-secondary:active,
+.btn-mui-outlined:active {
+  background-color: rgba(17, 17, 17, 0.08);
+  transform: translateY(1px);
+}
+
+/* 3. Material UI Outlined Red Accent Variant */
+.btn-mui-outlined-red {
+  background-color: transparent;
+  color: #c3002f;
+  font-family: "Nissan Bold", Verdana, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1.25px;
+  text-transform: uppercase;
+  padding: 10px 24px;
+  min-height: 44px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid rgba(195, 0, 47, 0.5);
+  cursor: pointer;
+  transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+}
+
+.btn-mui-outlined-red:hover {
+  background-color: rgba(195, 0, 47, 0.06);
+  border-color: #c3002f;
+  color: #a10027;
+  transform: translateY(-1px);
+}
+
+.btn-mui-outlined-red:active {
+  background-color: rgba(195, 0, 47, 0.12);
+  transform: translateY(1px);
+}
+
+/* 4. Material UI Text Button (Clean text format, hoverable ripple wash) */
+.btn-mui-text {
+  background-color: transparent;
+  color: #111111;
+  font-family: "Nissan Bold", Verdana, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1.25px;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 200ms cubic-bezier(0.4, 0, 0.2, 1),
+              color 200ms cubic-bezier(0.4, 0, 0.2, 1),
+              transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+}
+
+.btn-mui-text:hover {
+  background-color: rgba(17, 17, 17, 0.06);
+  color: #c3002f;
+}
+
+.btn-mui-text:active {
+  background-color: rgba(17, 17, 17, 0.12);
+  transform: translateY(1px);
+}
+
+/* Material UI Text Button in Red */
+.btn-mui-text-red {
+  background-color: transparent;
+  color: #c3002f;
+  font-family: "Nissan Bold", Verdana, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1.25px;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 200ms cubic-bezier(0.4, 0, 0.2, 1),
+              color 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-mui-text-red:hover {
+  background-color: rgba(195, 0, 47, 0.08);
+  color: #a10027;
+}
+
+.btn-mui-text-red:active {
+  background-color: rgba(195, 0, 47, 0.16);
+}
+
+/* 5. Material UI Ghost White Button for dark heroes */
+.btn-nissan-white,
+.btn-mui-white {
+  background-color: #ffffff;
+  color: #111111;
+  font-family: "Nissan Bold", Verdana, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1.25px;
+  text-transform: uppercase;
+  padding: 10px 24px;
+  min-height: 44px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid #ffffff;
+  cursor: pointer;
+  box-shadow: 0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12);
+  transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-nissan-white:hover,
+.btn-mui-white:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  border-color: #ffffff;
+  box-shadow: none;
+  transform: translateY(-1px);
+}
+
+.btn-nissan-white:active,
+.btn-mui-white:active {
+  background-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(1px);
+}
+
