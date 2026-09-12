@@ -21,6 +21,36 @@ import { CAR_MODELS } from './data/nissanData';
 import { CarModel, UserProfile } from './types';
 
 export default function App() {
+  // Global Dark Mode state
+  const [darkMode, setDarkMode] = useState<boolean>(() => {
+    try {
+      const saved = localStorage.getItem('tara_nissan_theme');
+      if (saved) return saved === 'dark';
+      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    } catch {
+      return false;
+    }
+  });
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (darkMode) {
+      root.classList.add('dark');
+      try {
+        localStorage.setItem('tara_nissan_theme', 'dark');
+      } catch {}
+    } else {
+      root.classList.remove('dark');
+      try {
+        localStorage.setItem('tara_nissan_theme', 'light');
+      } catch {}
+    }
+  }, [darkMode]);
+
+  const handleToggleDarkMode = () => {
+    setDarkMode((prev) => !prev);
+  };
+
   // Authentication state
   const [user, setUser] = useState<UserProfile | null>(() => {
     try {
@@ -107,24 +137,26 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-[#111111] flex flex-col font-nissan-regular selection:bg-[#c3002f] selection:text-white">
+    <div className="min-h-screen bg-white dark:bg-[#0d0d0d] text-[#111111] dark:text-[#f3f4f6] flex flex-col font-nissan-regular selection:bg-[#c3002f] selection:text-white transition-colors duration-200">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-[#111111] text-white px-5 py-3 border-l-4 border-[#c3002f] shadow-2xl flex items-center gap-3 text-[14px] font-nissan-regular animate-in slide-in-from-bottom-3">
+        <div className="fixed bottom-6 right-6 z-50 bg-[#111111] dark:bg-[#1a1a1a] text-white px-5 py-3 border-l-4 border-[#c3002f] shadow-2xl flex items-center gap-3 text-[14px] font-nissan-regular animate-in slide-in-from-bottom-3 border border-neutral-700/50">
           <div className="w-2 h-2 rounded-full bg-[#c3002f] animate-ping" />
           <span>{toastMessage}</span>
           <button
             onClick={() => setToastMessage(null)}
-            className="ml-3 text-neutral-400 hover:text-white text-[12px]"
+            className="ml-3 text-neutral-400 hover:text-white text-[12px] cursor-pointer"
           >
             ✕
           </button>
         </div>
       )}
 
-      {/* 1. Header with brand logo, nav links, and quick CTAs */}
+      {/* 1. Header with brand logo, nav links, dark mode toggle and quick CTAs */}
       <Header
         user={user}
+        darkMode={darkMode}
+        onToggleDarkMode={handleToggleDarkMode}
         onOpenAuth={handleOpenAuth}
         onSignOut={handleSignOut}
         onOpenEmi={() => handleOpenEmi()}

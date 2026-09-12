@@ -20,10 +20,10 @@ export const TaraNissanLogo: React.FC<TaraNissanLogoProps> = ({
   const isDark = theme === 'dark';
 
   const heights = {
-    sm: 'h-8',
-    md: 'h-11 lg:h-[54px] xl:h-[58px]',
-    lg: 'h-13 lg:h-[64px] xl:h-[70px]',
-    xl: 'h-16 lg:h-20 xl:h-24',
+    sm: 'h-7 sm:h-8',
+    md: 'h-8 sm:h-9 md:h-10 lg:h-[54px] xl:h-[58px]',
+    lg: 'h-11 sm:h-12 lg:h-[64px] xl:h-[70px]',
+    xl: 'h-14 sm:h-16 lg:h-20 xl:h-24',
   }[size];
 
   const primaryTextColor = isDark ? '#FFFFFF' : '#111111';

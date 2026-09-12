@@ -109,11 +109,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6 animate-in fade-in duration-200">
       <div
         id="auth-modal-container"
-        className="bg-white w-full max-w-lg my-8 overflow-hidden shadow-2xl relative border border-[#222222] flex flex-col max-h-[92vh]"
+        className="bg-white dark:bg-[#151515] w-full max-w-lg my-8 overflow-hidden shadow-2xl relative border border-[#222222] dark:border-[#333333] flex flex-col max-h-[92vh] transition-colors"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header with Close button and Tara Nissan Logo */}
-        <div className="bg-[#111111] text-white p-6 pb-5 flex items-center justify-between border-b border-[#222222] shrink-0">
+        <div className="bg-[#111111] dark:bg-[#0d0d0d] text-white p-6 pb-5 flex items-center justify-between border-b border-[#222222] dark:border-[#262626] shrink-0">
           <div className="flex items-center">
             <TaraNissanLogo theme="dark" size="md" />
           </div>
@@ -129,7 +129,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
         {/* Tab switchers: Sign In vs Sign Up */}
         {!forgotPasswordView && (
-          <div className="flex border-b border-[#e5e5e5] bg-[#f8f8f8] shrink-0">
+          <div className="flex border-b border-[#e5e5e5] dark:border-[#2a2a2a] bg-[#f8f8f8] dark:bg-[#1a1a1a] shrink-0">
             <button
               id="tab-signin-btn"
               onClick={() => {
@@ -138,8 +138,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               }}
               className={`flex-1 py-3.5 text-center text-[13px] font-nissan-bold uppercase tracking-[1.5px] cursor-pointer transition-colors border-b-2 ${
                 mode === 'signin'
-                  ? 'border-[#c3002f] text-[#c3002f] bg-white'
-                  : 'border-transparent text-[#666666] hover:text-[#111111]'
+                  ? 'border-[#c3002f] text-[#c3002f] bg-white dark:bg-[#151515]'
+                  : 'border-transparent text-[#666666] dark:text-[#a0a0a0] hover:text-[#111111] dark:hover:text-white'
               }`}
             >
               SIGN IN
@@ -152,8 +152,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               }}
               className={`flex-1 py-3.5 text-center text-[13px] font-nissan-bold uppercase tracking-[1.5px] cursor-pointer transition-colors border-b-2 ${
                 mode === 'signup'
-                  ? 'border-[#c3002f] text-[#c3002f] bg-white'
-                  : 'border-transparent text-[#666666] hover:text-[#111111]'
+                  ? 'border-[#c3002f] text-[#c3002f] bg-white dark:bg-[#151515]'
+                  : 'border-transparent text-[#666666] dark:text-[#a0a0a0] hover:text-[#111111] dark:hover:text-white'
               }`}
             >
               CREATE ACCOUNT (SIGN UP)
@@ -163,7 +163,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
         {/* Error display */}
         {errorMessage && (
-          <div className="bg-red-50 text-red-700 text-[13px] px-6 py-2.5 border-b border-red-200">
+          <div className="bg-red-50 dark:bg-red-950/30 text-red-700 dark:text-red-400 text-[13px] px-6 py-2.5 border-b border-red-200 dark:border-red-900/50">
             {errorMessage}
           </div>
         )}
@@ -182,16 +182,16 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   className="space-y-4"
                 >
                   <div className="text-center space-y-2 mb-4">
-                    <h3 className="text-[20px] font-nissan-bold text-[#111111] uppercase tracking-wide">
+                    <h3 className="text-[20px] font-nissan-bold text-[#111111] dark:text-white uppercase tracking-wide">
                       Reset Your Password
                     </h3>
-                    <p className="text-[14px] text-[#666666] font-nissan-regular">
+                    <p className="text-[14px] text-[#666666] dark:text-[#a0a0a0] font-nissan-regular">
                       Enter the registered email or mobile number linked to your Tara Nissan profile. We'll send an OTP verification link.
                     </p>
                   </div>
 
                   <div>
-                    <label className="nissan-label-text text-[#444444] block mb-1">
+                    <label className="nissan-label-text text-[#444444] dark:text-[#a0a0a0] block mb-1">
                       Email or Mobile Number
                     </label>
                     <div className="relative">
@@ -199,7 +199,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                       <input
                         type="text"
                         placeholder="e.g. rahul@example.com or 9876543210"
-                        className="w-full pl-10 pr-4 py-2.5 border border-[#d5d5d5] text-[14px] font-nissan-regular focus:outline-none focus:border-[#c3002f]"
+                        className="w-full pl-10 pr-4 py-2.5 border border-[#d5d5d5] dark:border-[#333333] bg-white dark:bg-[#202020] text-[#111111] dark:text-white text-[14px] font-nissan-regular focus:outline-none focus:border-[#c3002f]"
                         required
                       />
                     </div>
@@ -215,20 +215,20 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   <button
                     type="button"
                     onClick={() => setForgotPasswordView(false)}
-                    className="btn-mui-text w-full justify-center text-[13px] py-2 text-[#666666] hover:text-[#c3002f]"
+                    className="btn-mui-text w-full justify-center text-[13px] py-2 text-[#666666] dark:text-[#a0a0a0] hover:text-[#c3002f]"
                   >
                     &larr; BACK TO SIGN IN
                   </button>
                 </form>
               ) : (
                 <div className="text-center py-6 space-y-4">
-                  <div className="w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto">
+                  <div className="w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto">
                     <CheckCircle2 className="w-7 h-7" />
                   </div>
-                  <h4 className="text-[18px] font-nissan-bold text-[#111111]">
+                  <h4 className="text-[18px] font-nissan-bold text-[#111111] dark:text-white">
                     Verification Link Sent!
                   </h4>
-                  <p className="text-[14px] text-[#555555]">
+                  <p className="text-[14px] text-[#555555] dark:text-[#b0b0b0]">
                     Please check your SMS or email inbox for instructions to reset your Tara Nissan password.
                   </p>
                   <button
@@ -248,17 +248,17 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             /* SIGN IN (LOGIN) FORM */
             <form onSubmit={handleSignIn} className="space-y-4">
               <div className="space-y-1">
-                <h3 className="text-[20px] font-nissan-bold text-[#111111] uppercase tracking-wide">
+                <h3 className="text-[20px] font-nissan-bold text-[#111111] dark:text-white uppercase tracking-wide">
                   Welcome to Tara Nissan
                 </h3>
-                <p className="text-[14px] text-[#666666] font-nissan-regular">
+                <p className="text-[14px] text-[#666666] dark:text-[#a0a0a0] font-nissan-regular">
                   Sign in to track your test drive bookings, service records, and personalized quotes.
                 </p>
               </div>
 
               {/* Login Identifier */}
               <div>
-                <label className="nissan-label-text text-[#444444] block mb-1">
+                <label className="nissan-label-text text-[#444444] dark:text-[#a0a0a0] block mb-1">
                   Email Address or Mobile Number
                 </label>
                 <div className="relative">
@@ -269,7 +269,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     placeholder="Enter email or 10-digit mobile"
                     value={loginIdentifier}
                     onChange={(e) => setLoginIdentifier(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2.5 border border-[#d5d5d5] text-[14px] font-nissan-regular focus:outline-none focus:border-[#c3002f]"
+                    className="w-full pl-10 pr-4 py-2.5 border border-[#d5d5d5] dark:border-[#333333] bg-white dark:bg-[#202020] text-[#111111] dark:text-white text-[14px] font-nissan-regular focus:outline-none focus:border-[#c3002f]"
                     required
                   />
                 </div>
@@ -278,7 +278,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               {/* Password */}
               <div>
                 <div className="flex justify-between items-center mb-1">
-                  <label className="nissan-label-text text-[#444444]">
+                  <label className="nissan-label-text text-[#444444] dark:text-[#a0a0a0]">
                     Password
                   </label>
                   <button
@@ -297,13 +297,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     placeholder="Enter your password"
                     value={loginPassword}
                     onChange={(e) => setLoginPassword(e.target.value)}
-                    className="w-full pl-10 pr-10 py-2.5 border border-[#d5d5d5] text-[14px] font-nissan-regular focus:outline-none focus:border-[#c3002f]"
+                    className="w-full pl-10 pr-10 py-2.5 border border-[#d5d5d5] dark:border-[#333333] bg-white dark:bg-[#202020] text-[#111111] dark:text-white text-[14px] font-nissan-regular focus:outline-none focus:border-[#c3002f]"
                     required
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 cursor-pointer"
                   >
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
@@ -321,7 +321,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 />
                 <label
                   htmlFor="signin-remember-checkbox"
-                  className="text-[13px] text-[#555555] font-nissan-regular cursor-pointer select-none"
+                  className="text-[13px] text-[#555555] dark:text-[#b0b0b0] font-nissan-regular cursor-pointer select-none"
                 >
                   Keep me signed in on this device
                 </label>
@@ -340,7 +340,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               </div>
 
               {/* One-click Demo login */}
-              <div className="pt-3 border-t border-[#f0f0f0] flex flex-col gap-2">
+              <div className="pt-3 border-t border-[#f0f0f0] dark:border-[#282828] flex flex-col gap-2">
                 <button
                   type="button"
                   id="demo-login-quick-btn"
@@ -350,7 +350,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   ⚡ One-Click Demo Sign In (Vikram Mehta)
                 </button>
 
-                <div className="text-center text-[13px] text-[#666666] pt-2">
+                <div className="text-center text-[13px] text-[#666666] dark:text-[#a0a0a0] pt-2">
                   Don't have a Tara Nissan account?{' '}
                   <button
                     type="button"
@@ -366,17 +366,17 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             /* SIGN UP (CREATE ACCOUNT) FORM */
             <form onSubmit={handleSignUp} className="space-y-4">
               <div className="space-y-1">
-                <h3 className="text-[20px] font-nissan-bold text-[#111111] uppercase tracking-wide">
+                <h3 className="text-[20px] font-nissan-bold text-[#111111] dark:text-white uppercase tracking-wide">
                   Create Your Account
                 </h3>
-                <p className="text-[14px] text-[#666666] font-nissan-regular">
+                <p className="text-[14px] text-[#666666] dark:text-[#a0a0a0] font-nissan-regular">
                   Join Tara Nissan Privileges for doorstep test drives, instant finance approvals, and priority service bookings.
                 </p>
               </div>
 
               {/* Full Name */}
               <div>
-                <label className="nissan-label-text text-[#444444] block mb-1">
+                <label className="nissan-label-text text-[#444444] dark:text-[#a0a0a0] block mb-1">
                   Full Name *
                 </label>
                 <div className="relative">
@@ -387,7 +387,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     placeholder="e.g. Ramesh Kumar"
                     value={signUpName}
                     onChange={(e) => setSignUpName(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2.5 border border-[#d5d5d5] text-[14px] font-nissan-regular focus:outline-none focus:border-[#c3002f]"
+                    className="w-full pl-10 pr-4 py-2.5 border border-[#d5d5d5] dark:border-[#333333] bg-white dark:bg-[#202020] text-[#111111] dark:text-white text-[14px] font-nissan-regular focus:outline-none focus:border-[#c3002f]"
                     required
                   />
                 </div>
@@ -396,7 +396,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               {/* Email & Phone */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="nissan-label-text text-[#444444] block mb-1">
+                  <label className="nissan-label-text text-[#444444] dark:text-[#a0a0a0] block mb-1">
                     Email Address *
                   </label>
                   <div className="relative">
@@ -407,14 +407,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                       placeholder="ramesh@gmail.com"
                       value={signUpEmail}
                       onChange={(e) => setSignUpEmail(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2.5 border border-[#d5d5d5] text-[14px] font-nissan-regular focus:outline-none focus:border-[#c3002f]"
+                      className="w-full pl-10 pr-4 py-2.5 border border-[#d5d5d5] dark:border-[#333333] bg-white dark:bg-[#202020] text-[#111111] dark:text-white text-[14px] font-nissan-regular focus:outline-none focus:border-[#c3002f]"
                       required
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="nissan-label-text text-[#444444] block mb-1">
+                  <label className="nissan-label-text text-[#444444] dark:text-[#a0a0a0] block mb-1">
                     Mobile Number *
                   </label>
                   <div className="relative">
@@ -425,7 +425,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                       placeholder="+91 9876543210"
                       value={signUpPhone}
                       onChange={(e) => setSignUpPhone(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2.5 border border-[#d5d5d5] text-[14px] font-nissan-regular focus:outline-none focus:border-[#c3002f]"
+                      className="w-full pl-10 pr-4 py-2.5 border border-[#d5d5d5] dark:border-[#333333] bg-white dark:bg-[#202020] text-[#111111] dark:text-white text-[14px] font-nissan-regular focus:outline-none focus:border-[#c3002f]"
                       required
                     />
                   </div>
@@ -434,7 +434,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
               {/* Password */}
               <div>
-                <label className="nissan-label-text text-[#444444] block mb-1">
+                <label className="nissan-label-text text-[#444444] dark:text-[#a0a0a0] block mb-1">
                   Create Password *
                 </label>
                 <div className="relative">
@@ -445,14 +445,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     placeholder="At least 6 characters"
                     value={signUpPassword}
                     onChange={(e) => setSignUpPassword(e.target.value)}
-                    className="w-full pl-10 pr-10 py-2.5 border border-[#d5d5d5] text-[14px] font-nissan-regular focus:outline-none focus:border-[#c3002f]"
+                    className="w-full pl-10 pr-10 py-2.5 border border-[#d5d5d5] dark:border-[#333333] bg-white dark:bg-[#202020] text-[#111111] dark:text-white text-[14px] font-nissan-regular focus:outline-none focus:border-[#c3002f]"
                     required
                     minLength={6}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 cursor-pointer"
                   >
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
@@ -462,7 +462,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               {/* Preferences: City and Interested Vehicle */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
                 <div>
-                  <label className="nissan-label-text text-[#444444] block mb-1">
+                  <label className="nissan-label-text text-[#444444] dark:text-[#a0a0a0] block mb-1">
                     Nearest Dealership City
                   </label>
                   <div className="relative">
@@ -470,10 +470,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     <select
                       value={signUpCity}
                       onChange={(e) => setSignUpCity(e.target.value)}
-                      className="w-full pl-10 pr-3 py-2.5 border border-[#d5d5d5] text-[13px] font-nissan-regular bg-white focus:outline-none focus:border-[#c3002f]"
+                      className="w-full pl-10 pr-3 py-2.5 border border-[#d5d5d5] dark:border-[#333333] text-[13px] font-nissan-regular bg-white dark:bg-[#202020] text-[#111111] dark:text-white focus:outline-none focus:border-[#c3002f]"
                     >
                       {DEALERS_LIST.map((d) => (
-                        <option key={d.id} value={d.city}>
+                        <option key={d.id} value={d.city} className="dark:bg-[#202020]">
                           {d.city} ({d.name.split(' ')[0]})
                         </option>
                       ))}
@@ -482,7 +482,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 </div>
 
                 <div>
-                  <label className="nissan-label-text text-[#444444] block mb-1">
+                  <label className="nissan-label-text text-[#444444] dark:text-[#a0a0a0] block mb-1">
                     Preferred Nissan Model
                   </label>
                   <div className="relative">
@@ -490,10 +490,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     <select
                       value={signUpPreferredCar}
                       onChange={(e) => setSignUpPreferredCar(e.target.value)}
-                      className="w-full pl-10 pr-3 py-2.5 border border-[#d5d5d5] text-[13px] font-nissan-regular bg-white focus:outline-none focus:border-[#c3002f]"
+                      className="w-full pl-10 pr-3 py-2.5 border border-[#d5d5d5] dark:border-[#333333] text-[13px] font-nissan-regular bg-white dark:bg-[#202020] text-[#111111] dark:text-white focus:outline-none focus:border-[#c3002f]"
                     >
                       {CAR_MODELS.map((car) => (
-                        <option key={car.id} value={car.name}>
+                        <option key={car.id} value={car.name} className="dark:bg-[#202020]">
                           {car.name}
                         </option>
                       ))}
@@ -514,7 +514,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 />
                 <label
                   htmlFor="signup-terms-checkbox"
-                  className="text-[12px] text-[#555555] font-nissan-regular leading-tight select-none cursor-pointer"
+                  className="text-[12px] text-[#555555] dark:text-[#b0b0b0] font-nissan-regular leading-tight select-none cursor-pointer"
                 >
                   I agree to Tara Nissan's Terms of Service and consent to receiving test drive updates and product news via Phone/WhatsApp.
                 </label>
@@ -532,7 +532,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 </button>
               </div>
 
-              <div className="text-center text-[13px] text-[#666666] pt-2 border-t border-[#f0f0f0]">
+              <div className="text-center text-[13px] text-[#666666] dark:text-[#a0a0a0] pt-2 border-t border-[#f0f0f0] dark:border-[#282828]">
                 Already have an account?{' '}
                 <button
                   type="button"
@@ -547,7 +547,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         </div>
 
         {/* Footer info note */}
-        <div className="bg-[#f5f5f5] px-6 py-3 border-t border-[#e5e5e5] text-[11px] text-[#777777] flex items-center justify-between shrink-0">
+        <div className="bg-[#f5f5f5] dark:bg-[#181818] px-6 py-3 border-t border-[#e5e5e5] dark:border-[#2a2a2a] text-[11px] text-[#777777] dark:text-[#a0a0a0] flex items-center justify-between shrink-0">
           <span>Protected by 256-bit SSL Security</span>
           <span>Tara Nissan Dealership Network</span>
         </div>

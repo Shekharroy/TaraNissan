@@ -52,11 +52,11 @@ export const EmiCalculatorModal: React.FC<EmiCalculatorModalProps> = ({
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/75 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6 animate-in fade-in duration-200">
       <div 
         id="emi-calculator-modal"
-        className="bg-white w-full max-w-4xl my-8 overflow-hidden shadow-2xl relative border border-[#222222] max-h-[92vh] flex flex-col"
+        className="bg-white dark:bg-[#151515] w-full max-w-4xl my-8 overflow-hidden shadow-2xl relative border border-[#222222] dark:border-[#333333] max-h-[92vh] flex flex-col transition-colors"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="bg-[#111111] text-white px-6 py-4 flex items-center justify-between border-b border-[#222222] shrink-0">
+        <div className="bg-[#111111] dark:bg-[#0d0d0d] text-white px-6 py-4 flex items-center justify-between border-b border-[#222222] dark:border-[#262626] shrink-0">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-full bg-[#c3002f] flex items-center justify-center text-white">
               <Calculator className="w-4 h-4" />
@@ -83,7 +83,7 @@ export const EmiCalculatorModal: React.FC<EmiCalculatorModalProps> = ({
         <div className="overflow-y-auto flex-1 p-6 space-y-8">
           {/* Select Car Model */}
           <div>
-            <label className="nissan-label-text text-[#444444] block mb-3">
+            <label className="nissan-label-text text-[#444444] dark:text-[#a0a0a0] block mb-3">
               1. SELECT NISSAN VEHICLE MODEL
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
@@ -94,8 +94,8 @@ export const EmiCalculatorModal: React.FC<EmiCalculatorModalProps> = ({
                   onClick={() => setSelectedCarId(car.id)}
                   className={`p-3 text-left border transition-all cursor-pointer flex flex-col justify-between ${
                     selectedCarId === car.id
-                      ? 'border-[#c3002f] bg-red-50/40 shadow-xs'
-                      : 'border-[#e0e0e0] hover:border-gray-400 bg-[#fafafa]'
+                      ? 'border-[#c3002f] bg-red-50/40 dark:bg-red-950/30 shadow-xs'
+                      : 'border-[#e0e0e0] dark:border-[#2a2a2a] hover:border-gray-400 bg-[#fafafa] dark:bg-[#1a1a1a]'
                   }`}
                 >
                   <div className="h-16 flex items-center justify-center mb-2">
@@ -107,7 +107,7 @@ export const EmiCalculatorModal: React.FC<EmiCalculatorModalProps> = ({
                     />
                   </div>
                   <div>
-                    <div className="text-[13px] font-nissan-bold text-[#111111] truncate">
+                    <div className="text-[13px] font-nissan-bold text-[#111111] dark:text-white truncate">
                       {car.name}
                     </div>
                     <div className="text-[11px] text-[#c3002f] font-nissan-bold">
@@ -123,9 +123,9 @@ export const EmiCalculatorModal: React.FC<EmiCalculatorModalProps> = ({
             {/* Sliders Column */}
             <div className="lg:col-span-7 space-y-6">
               {/* Down payment */}
-              <div className="p-4 bg-[#f9f9f9] border border-[#eeeeee]">
+              <div className="p-4 bg-[#f9f9f9] dark:bg-[#1c1c1c] border border-[#eeeeee] dark:border-[#2a2a2a]">
                 <div className="flex justify-between items-center mb-2">
-                  <label className="text-[13px] font-nissan-bold text-[#222222] uppercase tracking-wider">
+                  <label className="text-[13px] font-nissan-bold text-[#222222] dark:text-white uppercase tracking-wider">
                     Down Payment ({downPaymentPercent}%)
                   </label>
                   <span className="text-[15px] font-nissan-bold text-[#c3002f]">
@@ -141,7 +141,7 @@ export const EmiCalculatorModal: React.FC<EmiCalculatorModalProps> = ({
                   onChange={(e) => setDownPaymentPercent(Number(e.target.value))}
                   className="w-full accent-[#c3002f] cursor-pointer"
                 />
-                <div className="flex justify-between text-[11px] text-[#888888] mt-1">
+                <div className="flex justify-between text-[11px] text-[#888888] dark:text-[#a0a0a0] mt-1">
                   <span>10% (Min)</span>
                   <span>30%</span>
                   <span>60%</span>
@@ -149,12 +149,12 @@ export const EmiCalculatorModal: React.FC<EmiCalculatorModalProps> = ({
               </div>
 
               {/* Loan Tenure */}
-              <div className="p-4 bg-[#f9f9f9] border border-[#eeeeee]">
+              <div className="p-4 bg-[#f9f9f9] dark:bg-[#1c1c1c] border border-[#eeeeee] dark:border-[#2a2a2a]">
                 <div className="flex justify-between items-center mb-2">
-                  <label className="text-[13px] font-nissan-bold text-[#222222] uppercase tracking-wider">
+                  <label className="text-[13px] font-nissan-bold text-[#222222] dark:text-white uppercase tracking-wider">
                     Loan Tenure ({tenureYears} Years / {tenureYears * 12} Months)
                   </label>
-                  <span className="text-[15px] font-nissan-bold text-[#111111]">
+                  <span className="text-[15px] font-nissan-bold text-[#111111] dark:text-white">
                     {tenureYears} Years
                   </span>
                 </div>
@@ -167,7 +167,7 @@ export const EmiCalculatorModal: React.FC<EmiCalculatorModalProps> = ({
                   onChange={(e) => setTenureYears(Number(e.target.value))}
                   className="w-full accent-[#c3002f] cursor-pointer"
                 />
-                <div className="flex justify-between text-[11px] text-[#888888] mt-1">
+                <div className="flex justify-between text-[11px] text-[#888888] dark:text-[#a0a0a0] mt-1">
                   <span>1 Year</span>
                   <span>3 Years</span>
                   <span>5 Years</span>
@@ -176,12 +176,12 @@ export const EmiCalculatorModal: React.FC<EmiCalculatorModalProps> = ({
               </div>
 
               {/* Interest Rate */}
-              <div className="p-4 bg-[#f9f9f9] border border-[#eeeeee]">
+              <div className="p-4 bg-[#f9f9f9] dark:bg-[#1c1c1c] border border-[#eeeeee] dark:border-[#2a2a2a]">
                 <div className="flex justify-between items-center mb-2">
-                  <label className="text-[13px] font-nissan-bold text-[#222222] uppercase tracking-wider">
+                  <label className="text-[13px] font-nissan-bold text-[#222222] dark:text-white uppercase tracking-wider">
                     Annual Interest Rate
                   </label>
-                  <span className="text-[15px] font-nissan-bold text-[#111111]">
+                  <span className="text-[15px] font-nissan-bold text-[#111111] dark:text-white">
                     {interestRate.toFixed(2)}% p.a.
                   </span>
                 </div>
@@ -194,7 +194,7 @@ export const EmiCalculatorModal: React.FC<EmiCalculatorModalProps> = ({
                   onChange={(e) => setInterestRate(Number(e.target.value))}
                   className="w-full accent-[#c3002f] cursor-pointer"
                 />
-                <div className="flex justify-between text-[11px] text-[#888888] mt-1">
+                <div className="flex justify-between text-[11px] text-[#888888] dark:text-[#a0a0a0] mt-1">
                   <span>7.00%</span>
                   <span>8.75% (Nissan Standard)</span>
                   <span>14.00%</span>
@@ -255,7 +255,7 @@ export const EmiCalculatorModal: React.FC<EmiCalculatorModalProps> = ({
         </div>
 
         {/* Disclaimer Footer */}
-        <div className="bg-[#f5f5f5] px-6 py-3 border-t border-[#e5e5e5] text-[11px] text-[#777777] shrink-0">
+        <div className="bg-[#f5f5f5] dark:bg-[#181818] px-6 py-3 border-t border-[#e5e5e5] dark:border-[#2a2a2a] text-[11px] text-[#777777] dark:text-[#a0a0a0] shrink-0">
           *Disclaimer: The calculated EMI is indicative and calculated at current partner rates. Actual loan terms, interest rates, processing fees, and taxes are subject to banking partner underwriting.
         </div>
       </div>

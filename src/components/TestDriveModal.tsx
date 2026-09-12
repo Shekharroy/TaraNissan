@@ -47,11 +47,11 @@ export const TestDriveModal: React.FC<TestDriveModalProps> = ({
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/75 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6 animate-in fade-in duration-200">
       <div 
         id="test-drive-modal-container"
-        className="bg-white w-full max-w-2xl my-8 overflow-hidden shadow-2xl relative border border-[#222222] max-h-[92vh] flex flex-col"
+        className="bg-white dark:bg-[#151515] w-full max-w-2xl my-8 overflow-hidden shadow-2xl relative border border-[#222222] dark:border-[#333333] max-h-[92vh] flex flex-col transition-colors"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="bg-[#111111] text-white px-6 py-4 flex items-center justify-between border-b border-[#222222] shrink-0">
+        <div className="bg-[#111111] dark:bg-[#0d0d0d] text-white px-6 py-4 flex items-center justify-between border-b border-[#222222] dark:border-[#262626] shrink-0">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-full bg-[#c3002f] flex items-center justify-center text-white">
               <Calendar className="w-4 h-4" />
@@ -80,7 +80,7 @@ export const TestDriveModal: React.FC<TestDriveModalProps> = ({
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Selected Car preview */}
               <div>
-                <label className="nissan-label-text text-[#444444] block mb-2">
+                <label className="nissan-label-text text-[#444444] dark:text-[#a0a0a0] block mb-2">
                   1. SELECT CAR TO DRIVE
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
@@ -91,8 +91,8 @@ export const TestDriveModal: React.FC<TestDriveModalProps> = ({
                       onClick={() => setSelectedCarId(car.id)}
                       className={`p-2.5 border text-left flex items-center gap-2 cursor-pointer transition-colors ${
                         selectedCarId === car.id
-                          ? 'border-[#c3002f] bg-red-50/50'
-                          : 'border-[#e0e0e0] bg-[#fafafa] hover:border-gray-400'
+                          ? 'border-[#c3002f] bg-red-50/50 dark:bg-red-950/30'
+                          : 'border-[#e0e0e0] dark:border-[#2a2a2a] bg-[#fafafa] dark:bg-[#1a1a1a] hover:border-gray-400'
                       }`}
                     >
                       <img
@@ -102,8 +102,8 @@ export const TestDriveModal: React.FC<TestDriveModalProps> = ({
                         referrerPolicy="no-referrer"
                       />
                       <div className="truncate">
-                        <div className="text-[13px] font-nissan-bold text-[#111111] truncate">{car.name}</div>
-                        <div className="text-[10px] text-[#666666]">{car.priceDisplay.replace('Starting from ', '')}</div>
+                        <div className="text-[13px] font-nissan-bold text-[#111111] dark:text-white truncate">{car.name}</div>
+                        <div className="text-[10px] text-[#666666] dark:text-[#a0a0a0]">{car.priceDisplay.replace('Starting from ', '')}</div>
                       </div>
                     </button>
                   ))}
@@ -112,17 +112,17 @@ export const TestDriveModal: React.FC<TestDriveModalProps> = ({
 
               {/* Dealership Selection */}
               <div>
-                <label className="nissan-label-text text-[#444444] block mb-2">
+                <label className="nissan-label-text text-[#444444] dark:text-[#a0a0a0] block mb-2">
                   2. SELECT PREFERRED DEALERSHIP
                 </label>
                 <select
                   value={selectedDealer}
                   onChange={(e) => setSelectedDealer(e.target.value)}
-                  className="w-full py-2.5 px-3 border border-[#d5d5d5] text-[14px] font-nissan-regular focus:outline-none focus:border-[#c3002f]"
+                  className="w-full py-2.5 px-3 border border-[#d5d5d5] dark:border-[#333333] bg-white dark:bg-[#202020] text-[#111111] dark:text-white text-[14px] font-nissan-regular focus:outline-none focus:border-[#c3002f]"
                   required
                 >
                   {DEALERS_LIST.map((d) => (
-                    <option key={d.id} value={d.name}>
+                    <option key={d.id} value={d.name} className="dark:bg-[#202020]">
                       {d.city} - {d.name}
                     </option>
                   ))}
@@ -132,7 +132,7 @@ export const TestDriveModal: React.FC<TestDriveModalProps> = ({
               {/* Date & Slot */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="nissan-label-text text-[#444444] block mb-2">
+                  <label className="nissan-label-text text-[#444444] dark:text-[#a0a0a0] block mb-2">
                     PREFERRED DATE
                   </label>
                   <input
@@ -140,30 +140,30 @@ export const TestDriveModal: React.FC<TestDriveModalProps> = ({
                     value={preferredDate}
                     onChange={(e) => setPreferredDate(e.target.value)}
                     min={new Date().toISOString().split('T')[0]}
-                    className="w-full py-2.5 px-3 border border-[#d5d5d5] text-[14px] font-nissan-regular focus:outline-none focus:border-[#c3002f]"
+                    className="w-full py-2.5 px-3 border border-[#d5d5d5] dark:border-[#333333] bg-white dark:bg-[#202020] text-[#111111] dark:text-white text-[14px] font-nissan-regular focus:outline-none focus:border-[#c3002f]"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="nissan-label-text text-[#444444] block mb-2">
+                  <label className="nissan-label-text text-[#444444] dark:text-[#a0a0a0] block mb-2">
                     TIME SLOT
                   </label>
                   <select
                     value={preferredTimeSlot}
                     onChange={(e) => setPreferredTimeSlot(e.target.value)}
-                    className="w-full py-2.5 px-3 border border-[#d5d5d5] text-[14px] font-nissan-regular focus:outline-none focus:border-[#c3002f]"
+                    className="w-full py-2.5 px-3 border border-[#d5d5d5] dark:border-[#333333] bg-white dark:bg-[#202020] text-[#111111] dark:text-white text-[14px] font-nissan-regular focus:outline-none focus:border-[#c3002f]"
                   >
-                    <option>Morning (10:00 AM - 01:00 PM)</option>
-                    <option>Afternoon (01:00 PM - 04:00 PM)</option>
-                    <option>Evening (04:00 PM - 07:00 PM)</option>
+                    <option className="dark:bg-[#202020]">Morning (10:00 AM - 01:00 PM)</option>
+                    <option className="dark:bg-[#202020]">Afternoon (01:00 PM - 04:00 PM)</option>
+                    <option className="dark:bg-[#202020]">Evening (04:00 PM - 07:00 PM)</option>
                   </select>
                 </div>
               </div>
 
               {/* Contact Information */}
-              <div className="space-y-4 pt-2 border-t border-[#f0f0f0]">
-                <label className="nissan-label-text text-[#444444] block">
+              <div className="space-y-4 pt-2 border-t border-[#f0f0f0] dark:border-[#282828]">
+                <label className="nissan-label-text text-[#444444] dark:text-[#a0a0a0] block">
                   3. YOUR CONTACT DETAILS
                 </label>
 
@@ -175,7 +175,7 @@ export const TestDriveModal: React.FC<TestDriveModalProps> = ({
                       placeholder="Full Name *"
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2.5 border border-[#d5d5d5] text-[14px] font-nissan-regular focus:outline-none focus:border-[#c3002f]"
+                      className="w-full pl-10 pr-4 py-2.5 border border-[#d5d5d5] dark:border-[#333333] bg-white dark:bg-[#202020] text-[#111111] dark:text-white text-[14px] font-nissan-regular focus:outline-none focus:border-[#c3002f]"
                       required
                     />
                   </div>
@@ -189,7 +189,7 @@ export const TestDriveModal: React.FC<TestDriveModalProps> = ({
                       placeholder="Mobile Number (+91) *"
                       value={phoneNumber}
                       onChange={(e) => setPhoneNumber(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2.5 border border-[#d5d5d5] text-[14px] font-nissan-regular focus:outline-none focus:border-[#c3002f]"
+                      className="w-full pl-10 pr-4 py-2.5 border border-[#d5d5d5] dark:border-[#333333] bg-white dark:bg-[#202020] text-[#111111] dark:text-white text-[14px] font-nissan-regular focus:outline-none focus:border-[#c3002f]"
                       required
                       pattern="[0-9]{10}"
                       title="Please enter a 10-digit mobile number"
@@ -203,7 +203,7 @@ export const TestDriveModal: React.FC<TestDriveModalProps> = ({
                       placeholder="Email Address *"
                       value={emailAddress}
                       onChange={(e) => setEmailAddress(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2.5 border border-[#d5d5d5] text-[14px] font-nissan-regular focus:outline-none focus:border-[#c3002f]"
+                      className="w-full pl-10 pr-4 py-2.5 border border-[#d5d5d5] dark:border-[#333333] bg-white dark:bg-[#202020] text-[#111111] dark:text-white text-[14px] font-nissan-regular focus:outline-none focus:border-[#c3002f]"
                       required
                     />
                   </div>
@@ -220,14 +220,14 @@ export const TestDriveModal: React.FC<TestDriveModalProps> = ({
                 </button>
               </div>
 
-              <p className="text-[11px] text-[#777777] text-center">
+              <p className="text-[11px] text-[#777777] dark:text-[#909090] text-center">
                 By clicking Confirm, you authorize Nissan Motor India & authorized dealer partners to contact you via Phone/SMS/WhatsApp.
               </p>
             </form>
           ) : (
             /* Submission Confirmation Screen */
             <div className="text-center py-8 space-y-6">
-              <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto">
+              <div className="w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto">
                 <CheckCircle2 className="w-10 h-10" />
               </div>
 
@@ -235,31 +235,31 @@ export const TestDriveModal: React.FC<TestDriveModalProps> = ({
                 <span className="text-[12px] font-nissan-bold text-[#c3002f] uppercase tracking-widest block mb-1">
                   APPOINTMENT CONFIRMED
                 </span>
-                <h3 className="text-[24px] font-nissan-bold text-[#111111]">
+                <h3 className="text-[24px] font-nissan-bold text-[#111111] dark:text-white">
                   Thank You, {fullName || 'Valued Customer'}!
                 </h3>
-                <p className="text-[14px] text-[#555555] font-nissan-regular max-w-md mx-auto mt-2">
+                <p className="text-[14px] text-[#555555] dark:text-[#b0b0b0] font-nissan-regular max-w-md mx-auto mt-2">
                   Your test drive for the <strong>{selectedCar.name}</strong> has been registered. Our dealership product specialist will reach out shortly to coordinate delivery of the vehicle.
                 </p>
               </div>
 
               {/* Confirmation Card */}
-              <div className="bg-[#f9f9f9] border border-[#e5e5e5] p-5 max-w-md mx-auto text-left text-[13px] space-y-2">
-                <div className="flex justify-between border-b border-gray-200 pb-2">
-                  <span className="text-[#666666]">Booking Reference:</span>
+              <div className="bg-[#f9f9f9] dark:bg-[#1a1a1a] border border-[#e5e5e5] dark:border-[#2a2a2a] p-5 max-w-md mx-auto text-left text-[13px] space-y-2">
+                <div className="flex justify-between border-b border-gray-200 dark:border-[#282828] pb-2">
+                  <span className="text-[#666666] dark:text-[#a0a0a0]">Booking Reference:</span>
                   <span className="font-nissan-bold text-[#c3002f]">{bookingRef}</span>
                 </div>
                 <div className="flex justify-between py-1">
-                  <span className="text-[#666666]">Vehicle:</span>
-                  <span className="font-nissan-bold text-[#111111]">{selectedCar.name}</span>
+                  <span className="text-[#666666] dark:text-[#a0a0a0]">Vehicle:</span>
+                  <span className="font-nissan-bold text-[#111111] dark:text-white">{selectedCar.name}</span>
                 </div>
                 <div className="flex justify-between py-1">
-                  <span className="text-[#666666]">Dealership:</span>
-                  <span className="font-nissan-bold text-[#111111]">{selectedDealer}</span>
+                  <span className="text-[#666666] dark:text-[#a0a0a0]">Dealership:</span>
+                  <span className="font-nissan-bold text-[#111111] dark:text-white">{selectedDealer}</span>
                 </div>
                 <div className="flex justify-between py-1">
-                  <span className="text-[#666666]">Date & Slot:</span>
-                  <span className="font-nissan-bold text-[#111111]">{preferredDate} ({preferredTimeSlot.split(' ')[0]})</span>
+                  <span className="text-[#666666] dark:text-[#a0a0a0]">Date & Slot:</span>
+                  <span className="font-nissan-bold text-[#111111] dark:text-white">{preferredDate} ({preferredTimeSlot.split(' ')[0]})</span>
                 </div>
               </div>
 

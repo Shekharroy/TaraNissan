@@ -34,11 +34,11 @@ export const DealerLocatorModal: React.FC<DealerLocatorModalProps> = ({
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/75 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6 animate-in fade-in duration-200">
       <div 
         id="dealer-locator-modal"
-        className="bg-white w-full max-w-5xl my-8 overflow-hidden shadow-2xl relative border border-[#222222] max-h-[92vh] flex flex-col"
+        className="bg-white dark:bg-[#151515] w-full max-w-5xl my-8 overflow-hidden shadow-2xl relative border border-[#222222] dark:border-[#333333] max-h-[92vh] flex flex-col transition-colors"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="bg-[#111111] text-white px-6 py-4 flex items-center justify-between border-b border-[#222222] shrink-0">
+        <div className="bg-[#111111] dark:bg-[#0d0d0d] text-white px-6 py-4 flex items-center justify-between border-b border-[#222222] dark:border-[#262626] shrink-0">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-full bg-[#c3002f] flex items-center justify-center text-white">
               <MapPin className="w-4 h-4" />
@@ -62,7 +62,7 @@ export const DealerLocatorModal: React.FC<DealerLocatorModalProps> = ({
         </div>
 
         {/* Filter Bar */}
-        <div className="p-5 bg-[#f6f6f6] border-b border-[#e5e5e5] space-y-4 shrink-0">
+        <div className="p-5 bg-[#f6f6f6] dark:bg-[#1c1c1c] border-b border-[#e5e5e5] dark:border-[#2a2a2a] space-y-4 shrink-0">
           <div className="flex flex-col sm:flex-row gap-3">
             {/* Search Input */}
             <div className="relative flex-1">
@@ -72,7 +72,7 @@ export const DealerLocatorModal: React.FC<DealerLocatorModalProps> = ({
                 placeholder="Search by city, dealer name, or locality..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-white border border-[#d5d5d5] text-[14px] font-nissan-regular focus:outline-none focus:border-[#c3002f]"
+                className="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-[#252525] border border-[#d5d5d5] dark:border-[#3a3a3a] text-[14px] text-[#111111] dark:text-white font-nissan-regular focus:outline-none focus:border-[#c3002f]"
               />
             </div>
 
@@ -81,11 +81,11 @@ export const DealerLocatorModal: React.FC<DealerLocatorModalProps> = ({
               <select
                 value={selectedCity}
                 onChange={(e) => setSelectedCity(e.target.value)}
-                className="w-full py-2.5 px-3 bg-white border border-[#d5d5d5] text-[14px] font-nissan-bold uppercase tracking-wider focus:outline-none focus:border-[#c3002f] cursor-pointer"
+                className="w-full py-2.5 px-3 bg-white dark:bg-[#252525] border border-[#d5d5d5] dark:border-[#3a3a3a] text-[14px] text-[#111111] dark:text-white font-nissan-bold uppercase tracking-wider focus:outline-none focus:border-[#c3002f] cursor-pointer"
               >
-                <option value="all">ALL METROS & CITIES</option>
+                <option value="all" className="dark:bg-[#252525]">ALL METROS & CITIES</option>
                 {cities.filter(c => c !== 'all').map((c) => (
-                  <option key={c} value={c}>{c.toUpperCase()}</option>
+                  <option key={c} value={c} className="dark:bg-[#252525]">{c.toUpperCase()}</option>
                 ))}
               </select>
             </div>
@@ -93,7 +93,7 @@ export const DealerLocatorModal: React.FC<DealerLocatorModalProps> = ({
 
           {/* Quick city pills */}
           <div className="flex flex-wrap gap-2 items-center text-[12px]">
-            <span className="font-nissan-bold text-[#666666] uppercase tracking-wider">Top Hubs:</span>
+            <span className="font-nissan-bold text-[#666666] dark:text-[#a0a0a0] uppercase tracking-wider">Top Hubs:</span>
             {['New Delhi', 'Mumbai', 'Bengaluru', 'Chennai', 'Hyderabad'].map((city) => (
               <button
                 key={city}
@@ -101,7 +101,7 @@ export const DealerLocatorModal: React.FC<DealerLocatorModalProps> = ({
                 className={`px-2.5 py-1 text-[11px] font-nissan-bold uppercase tracking-wider transition-colors cursor-pointer ${
                   selectedCity === city
                     ? 'bg-[#c3002f] text-white'
-                    : 'bg-white border border-[#e0e0e0] text-[#444444] hover:border-black'
+                    : 'bg-white dark:bg-[#252525] border border-[#e0e0e0] dark:border-[#3a3a3a] text-[#444444] dark:text-[#cccccc] hover:border-black dark:hover:border-white'
                 }`}
               >
                 {city}
@@ -112,7 +112,7 @@ export const DealerLocatorModal: React.FC<DealerLocatorModalProps> = ({
 
         {/* Dealers List */}
         <div className="overflow-y-auto flex-1 p-6">
-          <div className="text-[13px] font-nissan-bold text-[#666666] uppercase tracking-wider mb-4">
+          <div className="text-[13px] font-nissan-bold text-[#666666] dark:text-[#a0a0a0] uppercase tracking-wider mb-4">
             Showing {filteredDealers.length} Authorized Showrooms & Service Centers
           </div>
 
@@ -120,41 +120,41 @@ export const DealerLocatorModal: React.FC<DealerLocatorModalProps> = ({
             {filteredDealers.map((dealer) => (
               <div
                 key={dealer.id}
-                className="p-5 bg-white border border-[#e0e0e0] hover:border-[#111111] hover:shadow-md transition-all flex flex-col justify-between"
+                className="p-5 bg-white dark:bg-[#1a1a1a] border border-[#e0e0e0] dark:border-[#2a2a2a] hover:border-[#111111] dark:hover:border-neutral-500 hover:shadow-md transition-all flex flex-col justify-between"
               >
                 <div className="space-y-3">
                   <div className="flex items-start justify-between gap-2">
-                    <h3 className="text-[16px] font-nissan-bold text-[#111111]">
+                    <h3 className="text-[16px] font-nissan-bold text-[#111111] dark:text-white">
                       {dealer.name}
                     </h3>
                     {dealer.isServiceCenter && (
-                      <span className="inline-flex items-center gap-1 text-[10px] font-nissan-bold bg-gray-100 text-gray-700 px-2 py-0.5 uppercase tracking-wider shrink-0">
+                      <span className="inline-flex items-center gap-1 text-[10px] font-nissan-bold bg-gray-100 dark:bg-neutral-800 text-gray-700 dark:text-gray-300 px-2 py-0.5 uppercase tracking-wider shrink-0">
                         <Wrench className="w-3 h-3 text-[#c3002f]" />
                         Sales & Service
                       </span>
                     )}
                   </div>
 
-                  <div className="flex items-start gap-2.5 text-[13px] text-[#444444]">
+                  <div className="flex items-start gap-2.5 text-[13px] text-[#444444] dark:text-[#b5b5b5]">
                     <MapPin className="w-4 h-4 text-[#c3002f] shrink-0 mt-0.5" />
                     <span>{dealer.address}</span>
                   </div>
 
-                  <div className="flex items-center gap-2.5 text-[13px] text-[#444444]">
+                  <div className="flex items-center gap-2.5 text-[13px] text-[#444444] dark:text-[#b5b5b5]">
                     <Phone className="w-4 h-4 text-[#c3002f] shrink-0" />
                     <span className="font-nissan-bold">{dealer.phone}</span>
                   </div>
 
-                  <div className="flex items-center gap-2.5 text-[13px] text-[#444444]">
+                  <div className="flex items-center gap-2.5 text-[13px] text-[#444444] dark:text-[#b5b5b5]">
                     <Clock className="w-4 h-4 text-[#c3002f] shrink-0" />
                     <span>{dealer.timing}</span>
                   </div>
                 </div>
 
-                <div className="mt-5 pt-4 border-t border-[#f0f0f0] flex items-center justify-between gap-3">
+                <div className="mt-5 pt-4 border-t border-[#f0f0f0] dark:border-[#282828] flex items-center justify-between gap-3">
                   <a
                     href={`tel:${dealer.phone.replace(/[^0-9+]/g, '')}`}
-                    className="text-[12px] font-nissan-bold text-[#111111] hover:text-[#c3002f] uppercase tracking-wider flex items-center gap-1"
+                    className="text-[12px] font-nissan-bold text-[#111111] dark:text-white hover:text-[#c3002f] dark:hover:text-[#ff3b5c] uppercase tracking-wider flex items-center gap-1"
                   >
                     Call Showroom
                   </a>
@@ -175,9 +175,9 @@ export const DealerLocatorModal: React.FC<DealerLocatorModalProps> = ({
 
           {filteredDealers.length === 0 && (
             <div className="text-center py-16">
-              <MapPin className="w-12 h-12 text-neutral-300 mx-auto mb-3" />
-              <div className="text-[16px] font-nissan-bold text-[#111111]">No dealerships found in this location</div>
-              <p className="text-[13px] text-[#666666] mt-1">Please try searching another city or resetting your filters.</p>
+              <MapPin className="w-12 h-12 text-neutral-300 dark:text-neutral-600 mx-auto mb-3" />
+              <div className="text-[16px] font-nissan-bold text-[#111111] dark:text-white">No dealerships found in this location</div>
+              <p className="text-[13px] text-[#666666] dark:text-[#a0a0a0] mt-1">Please try searching another city or resetting your filters.</p>
               <button
                 onClick={() => { setSelectedCity('all'); setSearchQuery(''); }}
                 className="mt-4 btn-nissan-secondary text-[12px] py-2 px-4"
@@ -189,8 +189,8 @@ export const DealerLocatorModal: React.FC<DealerLocatorModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="bg-[#f5f5f5] px-6 py-3 border-t border-[#e5e5e5] text-[12px] text-[#666666] flex justify-between items-center shrink-0">
-          <span>Nissan India Toll-Free Assistance: <strong>1800 209 3456</strong></span>
+        <div className="bg-[#f5f5f5] dark:bg-[#181818] px-6 py-3 border-t border-[#e5e5e5] dark:border-[#2a2a2a] text-[12px] text-[#666666] dark:text-[#a0a0a0] flex justify-between items-center shrink-0">
+          <span>Nissan India Toll-Free Assistance: <strong className="text-[#111111] dark:text-white">1800 209 3456</strong></span>
           <button
             onClick={onClose}
             className="btn-nissan-secondary text-[12px] py-1.5 px-4"
