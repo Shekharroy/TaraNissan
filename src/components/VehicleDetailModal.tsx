@@ -17,12 +17,12 @@ export const VehicleDetailModal: React.FC<VehicleDetailModalProps> = ({
   onOpenEmi,
   onOpenBrochure,
 }) => {
-  if (!car) return null;
-
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
   const [activeTab, setActiveTab] = useState<'overview' | 'variants' | 'specs'>('overview');
 
-  const selectedColor = car.colors[selectedColorIndex];
+  if (!car) return null;
+
+  const selectedColor = (car.colors && car.colors[selectedColorIndex]) || car.colors?.[0] || { name: 'Standard', hex: '#c3002f', code: 'std' };
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/75 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6 animate-in fade-in duration-200">

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, FileDown, CheckCircle2, Download, Printer } from 'lucide-react';
 import { CAR_MODELS } from '../data/nissanData';
+import { apiSubmitLead } from '../services/apiClient.ts';
 
 interface BrochureModalProps {
   initialCarId?: string;
@@ -15,15 +16,30 @@ export const BrochureModal: React.FC<BrochureModalProps> = ({
   onClose,
   onBookTestDrive,
 }) => {
-  if (!isOpen) return null;
-
   const [selectedCarId, setSelectedCarId] = useState<string>(initialCarId || CAR_MODELS[0].id);
   const [downloadSuccess, setDownloadSuccess] = useState(false);
+
+  React.useEffect(() => {
+    if (initialCarId) {
+      setSelectedCarId(initialCarId);
+    }
+  }, [initialCarId]);
+
+  if (!isOpen) return null;
 
   const selectedCar = CAR_MODELS.find((c) => c.id === selectedCarId) || CAR_MODELS[0];
 
   const handleDownload = () => {
     setDownloadSuccess(true);
+
+    // Asynchronously log brochure download lead into backend MongoDB
+    apiSubmitLead({
+      leadType: 'brochure_download',
+      vehicleModel: selectedCar.name,
+      vehicleModelCode: selectedCar.id.replace('nissan-', '').toUpperCase(),
+      message: `Customer downloaded digital brochure for ${selectedCar.name}`,
+    });
+
     setTimeout(() => {
       // Simulate file download
       const blob = new Blob([
@@ -38,38 +54,38 @@ export const BrochureModal: React.FC<BrochureModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/75 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6 animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/75 backdrop-blur-xs flex items-center justify-center p-2 sm:p-6 animate-in fade-in duration-200">
       <div 
         id="brochure-modal-container"
-        className="bg-white dark:bg-[#151515] w-full max-w-4xl my-8 overflow-hidden shadow-2xl relative border border-[#222222] dark:border-[#333333] max-h-[92vh] flex flex-col transition-colors"
+        className="bg-white dark:bg-[#151515] w-full max-w-4xl my-2 sm:my-8 overflow-hidden shadow-2xl relative border border-[#222222] dark:border-[#333333] max-h-[96vh] sm:max-h-[92vh] flex flex-col transition-colors"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="bg-[#111111] dark:bg-[#0d0d0d] text-white px-6 py-4 flex items-center justify-between border-b border-[#222222] dark:border-[#262626] shrink-0">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-[#c3002f] flex items-center justify-center text-white">
+        <div className="bg-[#111111] dark:bg-[#0d0d0d] text-white px-4 sm:px-6 py-3.5 sm:py-4 flex items-center justify-between border-b border-[#222222] dark:border-[#262626] shrink-0">
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            <div className="w-8 h-8 rounded-full bg-[#c3002f] flex items-center justify-center text-white shrink-0">
               <FileDown className="w-4 h-4" />
             </div>
             <div>
-              <div className="text-[11px] font-nissan-bold text-[#c3002f] uppercase tracking-widest">
+              <div className="text-[10px] sm:text-[11px] font-nissan-bold text-[#c3002f] uppercase tracking-widest">
                 OFFICIAL DIGITAL ARCHIVES
               </div>
-              <h2 className="text-[20px] font-nissan-bold tracking-wider uppercase text-white">
+              <h2 className="text-[16px] sm:text-[20px] font-nissan-bold tracking-wider uppercase text-white">
                 DOWNLOAD NISSAN E-BROCHURE
               </h2>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-neutral-400 hover:text-white transition-colors cursor-pointer"
+            className="p-1.5 sm:p-2 text-neutral-400 hover:text-white transition-colors cursor-pointer shrink-0"
             aria-label="Close brochure modal"
           >
-            <X className="w-6 h-6" />
+            <X className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
         </div>
 
         {/* Modal Body */}
-        <div className="overflow-y-auto flex-1 p-6 space-y-6">
+        <div className="overflow-y-auto flex-1 p-4 sm:p-6 space-y-6">
           {/* Select Car */}
           <div>
             <label className="nissan-label-text text-[#444444] dark:text-[#a0a0a0] block mb-3">

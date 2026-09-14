@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Menu, X, MapPin, Calculator, FileText, PhoneCall, ChevronDown, User, LogOut, ShieldCheck, Car, Sun, Moon } from 'lucide-react';
+import { Menu, X, MapPin, Calculator, FileText, PhoneCall, Phone, ChevronDown, User, LogOut, ShieldCheck, Car, Sun, Moon } from 'lucide-react';
 import { TaraNissanLogo } from './TaraNissanLogo';
 import { UserProfile } from '../types';
+import { trackCallTelemetry } from '../services/apiClient.ts';
 
 interface HeaderProps {
   user: UserProfile | null;
@@ -14,6 +15,8 @@ interface HeaderProps {
   onOpenTestDrive: () => void;
   onOpenBrochure: () => void;
   onSelectCar: (carId: string) => void;
+  onOpenCustomerDashboard: () => void;
+  onOpenAdminPortal: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -27,6 +30,8 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenTestDrive,
   onOpenBrochure,
   onSelectCar,
+  onOpenCustomerDashboard,
+  onOpenAdminPortal,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [vehiclesDropdownOpen, setVehiclesDropdownOpen] = useState(false);
@@ -42,16 +47,16 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-white dark:bg-[#0d0d0d] border-b border-[#e5e5e5] dark:border-[#222222] shadow-xs transition-colors duration-200">
+    <header className="sticky top-0 z-40 bg-white dark:bg-[#0d0d0d] border-b border-[#e5e5e5] dark:border-[#222222] shadow-xs transition-colors duration-200 w-full max-w-full overflow-x-hidden">
       {/* Top micro bar for dealer, tools & emergency helpline */}
-      <div className="hidden lg:block bg-[#141414] dark:bg-[#080808] text-white py-1 px-4 xl:px-8 border-b border-[#222222] dark:border-[#1a1a1a]">
-        <div className="max-w-7xl mx-auto flex justify-between items-center text-[10.5px] xl:text-[11px] tracking-wide uppercase font-nissan-regular">
-          <div className="flex items-center gap-4 xl:gap-5 whitespace-nowrap shrink-0">
-            <span className="text-[#9e9e9e]">Tara Nissan Helpdesk: <strong className="text-white font-nissan-bold">1800 209 3456</strong> (24x7 Toll Free)</span>
+      <div className="hidden lg:block bg-[#141414] dark:bg-[#080808] text-white py-1 px-4 xl:px-8 border-b border-[#222222] dark:border-[#1a1a1a] overflow-x-hidden">
+        <div className="max-w-7xl mx-auto flex justify-between items-center text-[10.5px] xl:text-[11px] tracking-wide uppercase font-nissan-regular min-w-0">
+          <div className="flex items-center gap-3 xl:gap-4 whitespace-nowrap shrink-0">
+            <span className="text-[#9e9e9e]">Toll-Free: <strong className="text-white font-nissan-bold">1800 209 3456</strong></span>
             <span className="text-[#444444]">|</span>
-            <span className="text-[#9e9e9e]">Authorized Dealership Network</span>
+            <span className="text-[#9e9e9e]">NH28 Motihari Dealership</span>
           </div>
-          <div className="flex items-center gap-3.5 xl:gap-5 whitespace-nowrap shrink-0">
+          <div className="flex items-center gap-2.5 xl:gap-4 whitespace-nowrap shrink-0">
             {/* Quick topbar theme button */}
             <button 
               id="topbar-theme-toggle-btn"
@@ -110,6 +115,19 @@ export const Header: React.FC<HeaderProps> = ({
               <span>Book Test Drive</span>
             </button>
 
+            <span className="text-[#444444]">|</span>
+
+            {/* Direct Dashboard Access Button */}
+            <button
+              id="topbar-customer-dashboard-btn"
+              onClick={onOpenCustomerDashboard}
+              className="flex items-center gap-1 text-white hover:text-[#c3002f] transition-colors cursor-pointer whitespace-nowrap font-nissan-bold bg-neutral-800 hover:bg-neutral-700 px-2 py-0.5 rounded-xs"
+              title="View Customer Dashboard (Test Drives, Service Bay, Configurations, GST Invoices)"
+            >
+              <Car className="w-3 h-3 text-[#c3002f]" />
+              <span>My Dashboard</span>
+            </button>
+
             {user ? (
               <div className="relative shrink-0">
                 <button
@@ -118,11 +136,60 @@ export const Header: React.FC<HeaderProps> = ({
                   className="flex items-center gap-1 text-white hover:text-[#c3002f] transition-colors cursor-pointer whitespace-nowrap"
                 >
                   <span className="w-3.5 h-3.5 rounded-full bg-[#c3002f] text-white text-[8.5px] flex items-center justify-center font-nissan-bold">
-                    {user.name.charAt(0)}
+                    {(user.name || user.fullName || 'User').charAt(0).toUpperCase()}
                   </span>
-                  <span>Hi, {user.name.split(' ')[0]}</span>
+                  <span>Hi, {(user.name || user.fullName || 'User').split(' ')[0]}</span>
                   <ChevronDown className="w-2.5 h-2.5 text-neutral-400" />
                 </button>
+
+                {userDropdownOpen && (
+                  <div className="absolute right-0 top-full mt-1.5 w-60 bg-white dark:bg-[#161616] text-[#111111] dark:text-white border border-[#e5e5e5] dark:border-[#2e2e2e] shadow-xl py-2 z-50 normal-case">
+                    <div className="px-4 py-2 border-b border-[#f0f0f0] dark:border-[#252525]">
+                      <div className="text-[13px] font-nissan-bold">{user.name || user.fullName || 'User'}</div>
+                      <div className="text-[11px] text-[#777777] dark:text-[#a0a0a0] truncate">{user.email || ''}</div>
+                    </div>
+                    <button
+                      onClick={() => {
+                        onOpenCustomerDashboard();
+                        setUserDropdownOpen(false);
+                      }}
+                      className="w-full text-left px-4 py-2 text-[12px] text-[#c3002f] hover:bg-red-50 dark:hover:bg-red-950/20 flex items-center justify-between font-nissan-bold border-b border-[#f0f0f0] dark:border-[#252525] cursor-pointer"
+                    >
+                      <span>Customer Dashboard</span>
+                      <Car className="w-3.5 h-3.5" />
+                    </button>
+                    <button
+                      onClick={() => {
+                        onOpenTestDrive();
+                        setUserDropdownOpen(false);
+                      }}
+                      className="w-full text-left px-4 py-2 text-[12px] hover:bg-[#f9f9f9] dark:hover:bg-[#202020] flex items-center justify-between cursor-pointer"
+                    >
+                      <span>Bookings & Test Drives</span>
+                      <ShieldCheck className="w-3.5 h-3.5 text-gray-400" />
+                    </button>
+                    <button
+                      onClick={() => {
+                        onOpenEmi();
+                        setUserDropdownOpen(false);
+                      }}
+                      className="w-full text-left px-4 py-2 text-[12px] hover:bg-[#f9f9f9] dark:hover:bg-[#202020] flex items-center justify-between border-b border-[#f0f0f0] dark:border-[#252525] cursor-pointer"
+                    >
+                      <span>EMI Calculator</span>
+                      <Calculator className="w-3.5 h-3.5 text-gray-400" />
+                    </button>
+                    <button
+                      onClick={() => {
+                        onSignOut();
+                        setUserDropdownOpen(false);
+                      }}
+                      className="w-full text-left px-4 py-2 text-[12px] text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20 flex items-center justify-between font-nissan-bold cursor-pointer"
+                    >
+                      <span>Sign Out</span>
+                      <LogOut className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                )}
               </div>
             ) : (
               <div className="flex items-center gap-2 whitespace-nowrap shrink-0">
@@ -275,6 +342,14 @@ export const Header: React.FC<HeaderProps> = ({
               >
                 Dealers
               </button>
+
+              <button
+                id="nav-customer-dashboard-btn"
+                onClick={onOpenCustomerDashboard}
+                className="hidden xl:inline-flex btn-mui-text text-[11px] xl:text-[11.5px] font-nissan-bold tracking-[0.2px] text-[#c3002f] dark:text-[#ff4d6d] hover:underline py-1 px-2.5 cursor-pointer whitespace-nowrap shrink-0"
+              >
+                Customer Dashboard
+              </button>
             </nav>
           </div>
 
@@ -315,10 +390,10 @@ export const Header: React.FC<HeaderProps> = ({
                   className="flex items-center gap-1.5 py-1 px-2 border border-[#e5e5e5] dark:border-[#333333] hover:border-[#c3002f] transition-colors cursor-pointer bg-[#fafafa] dark:bg-[#181818] whitespace-nowrap shrink-0"
                 >
                   <div className="w-5 h-5 rounded-full bg-[#c3002f] text-white flex items-center justify-center text-[10px] font-nissan-bold">
-                    {user.name.charAt(0)}
+                    {(user.name || user.fullName || 'User').charAt(0).toUpperCase()}
                   </div>
                   <span className="text-[11px] font-nissan-bold text-[#111111] dark:text-white whitespace-nowrap">
-                    {user.name.split(' ')[0]}
+                    {(user.name || user.fullName || 'User').split(' ')[0]}
                   </span>
                   <ChevronDown className={`w-3 h-3 transition-transform ${userDropdownOpen ? 'rotate-180 text-[#c3002f]' : 'text-gray-500'}`} />
                 </button>
@@ -326,12 +401,23 @@ export const Header: React.FC<HeaderProps> = ({
                 {userDropdownOpen && (
                   <div className="absolute right-0 top-full mt-1.5 w-64 bg-white dark:bg-[#161616] border border-[#e5e5e5] dark:border-[#2e2e2e] shadow-xl py-2 z-50 animate-in fade-in">
                     <div className="px-4 py-2.5 border-b border-[#f0f0f0] dark:border-[#252525]">
-                      <div className="text-[14px] font-nissan-bold text-[#111111] dark:text-white">{user.name}</div>
-                      <div className="text-[12px] text-[#777777] dark:text-[#a0a0a0] truncate">{user.email}</div>
+                      <div className="text-[14px] font-nissan-bold text-[#111111] dark:text-white">{user.name || user.fullName || 'User'}</div>
+                      <div className="text-[12px] text-[#777777] dark:text-[#a0a0a0] truncate">{user.email || ''}</div>
                       <div className="text-[11px] text-[#c3002f] font-nissan-bold mt-1 uppercase">
                         Tara Nissan Privileged Member
                       </div>
                     </div>
+
+                    <button
+                      onClick={() => {
+                        onOpenCustomerDashboard();
+                        setUserDropdownOpen(false);
+                      }}
+                      className="w-full text-left px-4 py-2.5 text-[13px] text-[#c3002f] hover:bg-red-50 dark:hover:bg-red-950/20 flex items-center justify-between font-nissan-bold border-b border-[#f0f0f0] dark:border-[#252525]"
+                    >
+                      <span>Customer Dashboard</span>
+                      <Car className="w-4 h-4 text-[#c3002f]" />
+                    </button>
 
                     <button
                       onClick={() => {
@@ -435,7 +521,7 @@ export const Header: React.FC<HeaderProps> = ({
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-white dark:bg-[#121212] border-t border-[#e5e5e5] dark:border-[#262626] px-4 pt-3 pb-6 space-y-3 shadow-lg max-h-[calc(100vh-64px)] overflow-y-auto">
+        <div className="lg:hidden bg-white dark:bg-[#121212] border-t border-[#e5e5e5] dark:border-[#262626] px-4 pt-3 pb-8 space-y-3 shadow-lg max-h-[calc(100dvh-64px)] overflow-y-auto">
           {/* Theme switch row in mobile drawer */}
           <div className="p-3 bg-[#f8f8f8] dark:bg-[#1a1a1a] border border-[#e8e8e8] dark:border-[#2a2a2a] flex items-center justify-between">
             <div className="flex items-center gap-2 text-[12px] font-nissan-bold text-[#111111] dark:text-white uppercase tracking-wider">
@@ -472,10 +558,10 @@ export const Header: React.FC<HeaderProps> = ({
             <div className="bg-[#f6f6f6] dark:bg-[#1a1a1a] p-3 border border-[#e5e5e5] dark:border-[#2a2a2a] flex items-center justify-between">
               <div className="flex items-center gap-2.5">
                 <div className="w-7 h-7 rounded-full bg-[#c3002f] text-white flex items-center justify-center font-nissan-bold text-[12px]">
-                  {user.name.charAt(0)}
+                  {(user.name || user.fullName || 'User').charAt(0).toUpperCase()}
                 </div>
                 <div>
-                  <div className="text-[13px] font-nissan-bold text-[#111111] dark:text-white">{user.name}</div>
+                  <div className="text-[13px] font-nissan-bold text-[#111111] dark:text-white">{user.name || user.fullName || 'User'}</div>
                   <div className="text-[10.5px] text-[#666666] dark:text-[#a0a0a0]">{user.city || 'Tara Nissan Member'}</div>
                 </div>
               </div>
@@ -573,7 +659,28 @@ export const Header: React.FC<HeaderProps> = ({
             <MapPin className="w-4 h-4 text-[#c3002f]" />
           </button>
 
+          <button
+            onClick={() => { onOpenCustomerDashboard(); setMobileMenuOpen(false); }}
+            className="w-full text-left py-2.5 border-b border-[#f0f0f0] dark:border-[#262626] text-[13px] font-nissan-bold text-[#c3002f] hover:underline flex items-center justify-between cursor-pointer"
+          >
+            <span>Customer Dashboard (Invoices & Drives)</span>
+            <Car className="w-4 h-4 text-[#c3002f]" />
+          </button>
+
           <div className="pt-2 flex flex-col gap-2">
+            <a
+              id="mobile-menu-call-link"
+              href="tel:+919031005087"
+              onClick={() => {
+                trackCallTelemetry('Mobile Menu Direct Call');
+                setMobileMenuOpen(false);
+              }}
+              className="w-full py-2.5 px-3 bg-[#c3002f] hover:bg-[#a00026] text-white font-nissan-bold text-[12px] uppercase tracking-wider flex items-center justify-center gap-2 rounded-xs shadow-sm transition-colors"
+            >
+              <Phone className="w-4 h-4 animate-bounce" />
+              <span>Call Tara Nissan: +91 9031005087 (9 AM - 7:30 PM)</span>
+            </a>
+
             <button
               onClick={() => { onOpenTestDrive(); setMobileMenuOpen(false); }}
               className="w-full btn-mui-contained py-2.5 justify-center flex items-center gap-2"

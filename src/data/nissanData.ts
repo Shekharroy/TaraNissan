@@ -357,6 +357,17 @@ export const HERO_SLIDES: HeroSlide[] = [
 
 export const DEALERS_LIST: Dealer[] = [
   {
+    id: 'd0-motihari',
+    name: 'Tara Nissan - Motihari (Flagship Showroom & Workshop)',
+    city: 'Motihari',
+    state: 'Bihar',
+    address: 'Near Toll Plaza, NH28 Expressway, Bankat, Bapudham Motihari, Bihar - 845402',
+    phone: '+91 90310 05087',
+    email: 'contact@taranissan.in',
+    timing: 'Mon - Sun: 09:00 AM - 07:30 PM',
+    isServiceCenter: true
+  },
+  {
     id: 'd1',
     name: 'Torque Nissan - Connaught Place',
     city: 'New Delhi',

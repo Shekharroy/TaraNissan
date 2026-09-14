@@ -6,7 +6,7 @@ export const NewsSection: React.FC = () => {
   return (
     <section 
       id="latest-news-section"
-      className="py-16 sm:py-20 bg-white dark:bg-[#121212] border-b border-[#e5e5e5] dark:border-[#222222] transition-colors duration-200"
+      className="py-16 sm:py-20 bg-white dark:bg-[#121212] border-b border-[#e5e5e5] dark:border-[#222222] transition-colors duration-200 w-full max-w-full overflow-x-hidden"
       aria-label="Nissan Latest News"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

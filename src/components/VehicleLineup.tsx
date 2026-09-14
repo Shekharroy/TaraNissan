@@ -36,7 +36,7 @@ export const VehicleLineup: React.FC<VehicleLineupProps> = ({
   return (
     <section 
       id="vehicle-lineup-section"
-      className="py-16 sm:py-20 bg-[#ffffff] dark:bg-[#121212] border-b border-[#e5e5e5] dark:border-[#222222] transition-colors duration-200"
+      className="py-16 sm:py-20 bg-[#ffffff] dark:bg-[#121212] border-b border-[#e5e5e5] dark:border-[#222222] transition-colors duration-200 w-full max-w-full overflow-x-hidden"
       aria-label="Nissan Vehicle Lineup"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -55,14 +55,14 @@ export const VehicleLineup: React.FC<VehicleLineupProps> = ({
         </div>
 
         {/* Category Tabs */}
-        <div className="flex justify-center mb-12 overflow-x-auto pb-2 scrollbar-none">
-          <div className="inline-flex border-b border-[#e5e5e5] dark:border-[#2b2b2b] gap-2 sm:gap-6">
+        <div className="flex justify-start sm:justify-center mb-10 sm:mb-12 overflow-x-auto max-w-full pb-2 scrollbar-none px-1">
+          <div className="inline-flex border-b border-[#e5e5e5] dark:border-[#2b2b2b] gap-1 sm:gap-6 min-w-max">
             {tabs.map((t) => (
               <button
                 key={t.id}
                 id={`filter-tab-${t.id}`}
                 onClick={() => setActiveTab(t.id)}
-                className={`pb-3 px-3 text-[13px] sm:text-[14px] font-nissan-bold uppercase tracking-[1.5px] transition-all relative cursor-pointer whitespace-nowrap ${
+                className={`pb-3 px-2.5 sm:px-3 text-[12px] sm:text-[14px] font-nissan-bold uppercase tracking-[1px] sm:tracking-[1.5px] transition-all relative cursor-pointer whitespace-nowrap ${
                   activeTab === t.id
                     ? 'text-[#c3002f] border-b-2 border-[#c3002f]'
                     : 'text-[#666666] dark:text-[#a0a0a0] hover:text-[#111111] dark:hover:text-white'

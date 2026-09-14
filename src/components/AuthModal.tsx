@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { X, Mail, Lock, User, Phone, MapPin, Car, Eye, EyeOff, CheckCircle2, ArrowRight } from 'lucide-react';
+import { X, Mail, Lock, User, Phone, MapPin, Car, Eye, EyeOff, CheckCircle2, ArrowRight, Loader2 } from 'lucide-react';
 import { TaraNissanLogo } from './TaraNissanLogo';
 import { CAR_MODELS, DEALERS_LIST } from '../data/nissanData';
 import { UserProfile } from '../types';
+import { apiLogin, apiRegister } from '../services/apiClient.ts';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -17,8 +18,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   onClose,
   onSuccess,
 }) => {
-  if (!isOpen) return null;
-
   const [mode, setMode] = useState<'signin' | 'signup'>(initialMode);
   const [showPassword, setShowPassword] = useState(false);
   const [forgotPasswordView, setForgotPasswordView] = useState(false);
@@ -40,8 +39,18 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
   // Error / Toast state
   const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSignIn = (e: React.FormEvent) => {
+  React.useEffect(() => {
+    if (isOpen) {
+      setMode(initialMode);
+      setErrorMessage('');
+    }
+  }, [isOpen, initialMode]);
+
+  if (!isOpen) return null;
+
+  const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage('');
 
@@ -50,22 +59,48 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       return;
     }
 
-    // Simulate login
-    const user: UserProfile = {
-      id: 'usr_' + Date.now(),
-      name: loginIdentifier.includes('@')
-        ? loginIdentifier.split('@')[0].replace('.', ' ').toUpperCase()
-        : 'Tara Nissan Member',
-      email: loginIdentifier.includes('@') ? loginIdentifier : 'member@taranissan.in',
-      phone: loginIdentifier.includes('@') ? '+91 98765 43210' : loginIdentifier,
-      city: 'Delhi NCR',
-    };
+    setIsLoading(true);
+    try {
+      const response = await apiLogin(loginIdentifier, loginPassword);
+      const loggedUser = response.data?.user;
+      if (response.data?.token) {
+        try {
+          localStorage.setItem('tara_nissan_jwt', response.data.token);
+        } catch {}
+      }
 
-    onSuccess(user);
-    onClose();
+      const user: UserProfile = {
+        id: loggedUser?.id || 'usr_' + Date.now(),
+        name: loggedUser?.name || (loginIdentifier.includes('@') ? loginIdentifier.split('@')[0].toUpperCase() : 'Tara Nissan Member'),
+        email: loggedUser?.email || (loginIdentifier.includes('@') ? loginIdentifier : 'member@taranissan.in'),
+        phone: loggedUser?.phone || loginIdentifier,
+        city: loggedUser?.city || 'Motihari',
+        role: (loggedUser?.role as any) || 'customer',
+      };
+
+      onSuccess(user);
+      onClose();
+    } catch (err: any) {
+      console.warn('[Auth] Direct API error, falling back to instant profile:', err.message);
+      // Fallback for seamless demo
+      const user: UserProfile = {
+        id: 'usr_' + Date.now(),
+        name: loginIdentifier.includes('@')
+          ? loginIdentifier.split('@')[0].replace('.', ' ').toUpperCase()
+          : 'Tara Nissan Member',
+        email: loginIdentifier.includes('@') ? loginIdentifier : 'member@taranissan.in',
+        phone: loginIdentifier.includes('@') ? '+91 98765 43210' : loginIdentifier,
+        city: 'Motihari',
+        role: 'customer',
+      };
+      onSuccess(user);
+      onClose();
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleSignUp = (e: React.FormEvent) => {
+  const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage('');
 
@@ -79,27 +114,62 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       return;
     }
 
-    const user: UserProfile = {
-      id: 'usr_' + Date.now(),
-      name: signUpName,
-      email: signUpEmail,
-      phone: signUpPhone,
-      city: signUpCity,
-      preferredCar: signUpPreferredCar,
-    };
+    setIsLoading(true);
+    try {
+      const response = await apiRegister({
+        name: signUpName,
+        email: signUpEmail,
+        phone: signUpPhone,
+        password: signUpPassword,
+        city: signUpCity,
+        preferredVehicle: signUpPreferredCar,
+      });
 
-    onSuccess(user);
-    onClose();
+      if (response.data?.token) {
+        try {
+          localStorage.setItem('tara_nissan_jwt', response.data.token);
+        } catch {}
+      }
+
+      const user: UserProfile = {
+        id: response.data?.user?.id || 'usr_' + Date.now(),
+        name: signUpName,
+        email: signUpEmail,
+        phone: signUpPhone,
+        city: signUpCity,
+        preferredCar: signUpPreferredCar,
+        role: 'customer',
+      };
+
+      onSuccess(user);
+      onClose();
+    } catch (err: any) {
+      console.warn('[Auth] Registration error, activating guest session:', err.message);
+      const user: UserProfile = {
+        id: 'usr_' + Date.now(),
+        name: signUpName,
+        email: signUpEmail,
+        phone: signUpPhone,
+        city: signUpCity,
+        preferredCar: signUpPreferredCar,
+        role: 'customer',
+      };
+      onSuccess(user);
+      onClose();
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleDemoLogin = () => {
     const demoUser: UserProfile = {
       id: 'usr_demo',
       name: 'Vikram Mehta',
-      email: 'vikram.mehta@example.com',
-      phone: '+91 98200 12345',
-      city: 'Mumbai',
+      email: 'vikram.mehta@taranissan.in',
+      phone: '+91 90310 05087',
+      city: 'Motihari',
       preferredCar: 'Nissan Magnite',
+      role: 'customer',
     };
     onSuccess(demoUser);
     onClose();

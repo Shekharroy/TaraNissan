@@ -15,7 +15,7 @@ export const SpotlightSection: React.FC<SpotlightSectionProps> = ({
   return (
     <section 
       id="spotlight-section"
-      className="py-16 sm:py-24 bg-[#f6f6f6] dark:bg-[#0f0f0f] border-b border-[#e5e5e5] dark:border-[#222222] transition-colors duration-200"
+      className="py-16 sm:py-24 bg-[#f6f6f6] dark:bg-[#0f0f0f] border-b border-[#e5e5e5] dark:border-[#222222] transition-colors duration-200 w-full max-w-full overflow-x-hidden"
       aria-label="Nissan Spotlight & Innovation"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

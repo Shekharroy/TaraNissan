@@ -17,6 +17,9 @@ import { BrochureModal } from './components/BrochureModal';
 import { DealerLocatorModal } from './components/DealerLocatorModal';
 import { TestDriveModal } from './components/TestDriveModal';
 import { AuthModal } from './components/AuthModal';
+import { CustomerDashboardModal } from './components/CustomerDashboardModal';
+import { AdminRBACPortalModal } from './components/AdminRBACPortalModal';
+import { FloatingCTABar } from './components/FloatingCTABar';
 import { CAR_MODELS } from './data/nissanData';
 import { CarModel, UserProfile } from './types';
 
@@ -55,7 +58,16 @@ export default function App() {
   const [user, setUser] = useState<UserProfile | null>(() => {
     try {
       const saved = localStorage.getItem('tara_nissan_user');
-      return saved ? JSON.parse(saved) : null;
+      if (!saved) return null;
+      const parsed = JSON.parse(saved);
+      const actualUser = parsed?.user || parsed;
+      if (!actualUser || typeof actualUser !== 'object') return null;
+      const validName = actualUser.name || actualUser.fullName || (actualUser.email ? actualUser.email.split('@')[0] : 'Member');
+      return {
+        ...actualUser,
+        name: validName,
+        role: actualUser.role || 'customer',
+      };
     } catch {
       return null;
     }
@@ -70,10 +82,14 @@ export default function App() {
   const [isBrochureOpen, setIsBrochureOpen] = useState(false);
   const [isDealerOpen, setIsDealerOpen] = useState(false);
   const [isTestDriveOpen, setIsTestDriveOpen] = useState(false);
+  const [isCustomerDashboardOpen, setIsCustomerDashboardOpen] = useState(false);
+  const [isAdminPortalOpen, setIsAdminPortalOpen] = useState(false);
 
   // Active target vehicle for modals
   const [activeCarId, setActiveCarId] = useState<string>(CAR_MODELS[0].id);
   const [activeDealerName, setActiveDealerName] = useState<string>('');
+
+  const activeCar = CAR_MODELS.find((c) => c.id === activeCarId) || selectedCarModal || CAR_MODELS[0];
 
   const handleOpenAuth = (mode: 'signin' | 'signup' = 'signin') => {
     setAuthInitialMode(mode);
@@ -137,7 +153,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0d0d0d] text-[#111111] dark:text-[#f3f4f6] flex flex-col font-nissan-regular selection:bg-[#c3002f] selection:text-white transition-colors duration-200">
+    <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-white dark:bg-[#0d0d0d] text-[#111111] dark:text-[#f3f4f6] flex flex-col font-nissan-regular selection:bg-[#c3002f] selection:text-white transition-colors duration-200">
       {/* Toast Notification */}
       {toastMessage && (
         <div className="fixed bottom-6 right-6 z-50 bg-[#111111] dark:bg-[#1a1a1a] text-white px-5 py-3 border-l-4 border-[#c3002f] shadow-2xl flex items-center gap-3 text-[14px] font-nissan-regular animate-in slide-in-from-bottom-3 border border-neutral-700/50">
@@ -164,9 +180,11 @@ export default function App() {
         onOpenTestDrive={() => handleOpenTestDrive()}
         onOpenBrochure={() => handleOpenBrochure()}
         onSelectCar={handleOpenCarDetail}
+        onOpenCustomerDashboard={() => setIsCustomerDashboardOpen(true)}
+        onOpenAdminPortal={() => setIsAdminPortalOpen(true)}
       />
 
-      <main className="flex-1">
+      <main className="flex-1 w-full max-w-full overflow-x-hidden">
         {/* 2. Hero Banner slider with verified Nissan.in CDN images */}
         <HeroBanner
           onSelectCar={handleOpenCarDetail}
@@ -214,64 +232,116 @@ export default function App() {
       />
 
       {/* Modals */}
-      <VehicleDetailModal
-        car={selectedCarModal}
-        onClose={() => setSelectedCarModal(null)}
-        onOpenTestDrive={(id) => {
-          setSelectedCarModal(null);
-          handleOpenTestDrive(id);
-        }}
-        onOpenEmi={(id) => {
-          setSelectedCarModal(null);
-          handleOpenEmi(id);
-        }}
-        onOpenBrochure={(id) => {
-          setSelectedCarModal(null);
-          handleOpenBrochure(id);
-        }}
-      />
+      {selectedCarModal && (
+        <VehicleDetailModal
+          car={selectedCarModal}
+          onClose={() => setSelectedCarModal(null)}
+          onOpenTestDrive={(id) => {
+            setSelectedCarModal(null);
+            handleOpenTestDrive(id);
+          }}
+          onOpenEmi={(id) => {
+            setSelectedCarModal(null);
+            handleOpenEmi(id);
+          }}
+          onOpenBrochure={(id) => {
+            setSelectedCarModal(null);
+            handleOpenBrochure(id);
+          }}
+        />
+      )}
 
-      <EmiCalculatorModal
-        initialCarId={activeCarId}
-        isOpen={isEmiOpen}
-        onClose={() => setIsEmiOpen(false)}
-        onBookNow={(id) => {
-          setIsEmiOpen(false);
-          handleOpenTestDrive(id);
-        }}
-      />
+      {isEmiOpen && (
+        <EmiCalculatorModal
+          initialCarId={activeCarId}
+          isOpen={isEmiOpen}
+          onClose={() => setIsEmiOpen(false)}
+          onBookNow={(id) => {
+            setIsEmiOpen(false);
+            handleOpenTestDrive(id);
+          }}
+        />
+      )}
 
-      <BrochureModal
-        initialCarId={activeCarId}
-        isOpen={isBrochureOpen}
-        onClose={() => setIsBrochureOpen(false)}
-        onBookTestDrive={(id) => {
-          setIsBrochureOpen(false);
-          handleOpenTestDrive(id);
-        }}
-      />
+      {isBrochureOpen && (
+        <BrochureModal
+          initialCarId={activeCarId}
+          isOpen={isBrochureOpen}
+          onClose={() => setIsBrochureOpen(false)}
+          onBookTestDrive={(id) => {
+            setIsBrochureOpen(false);
+            handleOpenTestDrive(id);
+          }}
+        />
+      )}
 
-      <DealerLocatorModal
-        isOpen={isDealerOpen}
-        onClose={() => setIsDealerOpen(false)}
-        onSelectDealerForTestDrive={handleDealerSelectedForTestDrive}
-      />
+      {isDealerOpen && (
+        <DealerLocatorModal
+          isOpen={isDealerOpen}
+          onClose={() => setIsDealerOpen(false)}
+          onSelectDealerForTestDrive={handleDealerSelectedForTestDrive}
+        />
+      )}
 
-      <TestDriveModal
-        initialCarId={activeCarId}
-        initialDealerName={activeDealerName}
-        isOpen={isTestDriveOpen}
-        onClose={() => {
-          setIsTestDriveOpen(false);
-          setActiveDealerName('');
-        }}
-      />
+      {isTestDriveOpen && (
+        <TestDriveModal
+          initialCarId={activeCarId}
+          initialDealerName={activeDealerName}
+          isOpen={isTestDriveOpen}
+          onClose={() => {
+            setIsTestDriveOpen(false);
+            setActiveDealerName('');
+          }}
+        />
+      )}
 
-      <AuthModal
-        isOpen={isAuthOpen}
-        initialMode={authInitialMode}
-        onClose={() => setIsAuthOpen(false)}
-        onSuccess={handleAuthSuccess}
+      {isAuthOpen && (
+        <AuthModal
+          isOpen={isAuthOpen}
+          initialMode={authInitialMode}
+          onClose={() => setIsAuthOpen(false)}
+          onSuccess={handleAuthSuccess}
+        />
+      )}
+
+      {isCustomerDashboardOpen && (
+        <CustomerDashboardModal
+          isOpen={isCustomerDashboardOpen}
+          onClose={() => setIsCustomerDashboardOpen(false)}
+          currentUser={user}
+          onOpenTestDrive={(carId) => handleOpenTestDrive(carId)}
+        />
+      )}
+
+      {isAdminPortalOpen && (
+        <AdminRBACPortalModal
+          isOpen={isAdminPortalOpen}
+          onClose={() => setIsAdminPortalOpen(false)}
+          currentUser={user}
+          onRoleSwitched={(rawUser) => {
+            const actualUser = (rawUser as any)?.user || rawUser;
+            const normalizedUser: UserProfile = {
+              ...actualUser,
+              name: actualUser.name || actualUser.fullName || 'Staff User',
+              role: actualUser.role || 'customer',
+            };
+            setUser(normalizedUser);
+            try {
+              localStorage.setItem('tara_nissan_user', JSON.stringify(normalizedUser));
+            } catch (e) {
+              console.error(e);
+            }
+            const roleDisplay = (normalizedUser.role || 'customer').replace('_', ' ').toUpperCase();
+            setToastMessage(`Switched to ${roleDisplay} role`);
+            setTimeout(() => setToastMessage(null), 3500);
+          }}
+        />
+      )}
+
+      {/* Direct Telephony FAB, Staff Portal FAB and Floating WhatsApp Instant Communication */}
+      <FloatingCTABar 
+        selectedCarName={activeCar?.name ? `Nissan ${activeCar.name}` : 'Nissan Tekton'} 
+        onOpenAdminPortal={() => setIsAdminPortalOpen(true)}
       />
     </div>
   );
