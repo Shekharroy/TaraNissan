@@ -47,16 +47,21 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-white dark:bg-[#0d0d0d] border-b border-[#e5e5e5] dark:border-[#222222] shadow-xs transition-colors duration-200 w-full max-w-full overflow-x-hidden">
+    <header className="sticky top-0 z-40 bg-white dark:bg-[#0d0d0d] border-b border-[#e5e5e5] dark:border-[#222222] shadow-xs transition-colors duration-200 w-full">
       {/* Top micro bar for dealer, tools & emergency helpline */}
-      <div className="hidden lg:block bg-[#141414] dark:bg-[#080808] text-white py-1 px-4 xl:px-8 border-b border-[#222222] dark:border-[#1a1a1a] overflow-x-hidden">
+      <div className="hidden lg:block bg-[#141414] dark:bg-[#080808] text-white py-1 px-4 xl:px-8 border-b border-[#222222] dark:border-[#1a1a1a]">
         <div className="max-w-7xl mx-auto flex justify-between items-center text-[10.5px] xl:text-[11px] tracking-wide uppercase font-nissan-regular min-w-0">
           <div className="flex items-center gap-3 xl:gap-4 whitespace-nowrap shrink-0">
-            <span className="text-[#9e9e9e]">Toll-Free: <strong className="text-white font-nissan-bold">1800 209 3456</strong></span>
-            <span className="text-[#444444]">|</span>
-            <span className="text-[#9e9e9e]">NH28 Motihari Dealership</span>
+            <a 
+              href="tel:18002093456" 
+              className="flex items-center gap-1.5 text-[#9e9e9e] hover:text-white transition-colors cursor-pointer"
+              title="Call Nissan Toll-Free Helpline"
+            >
+              <span>Toll-Free:</span>
+              <strong className="text-white font-nissan-bold">1800 209 3456</strong>
+            </a>
           </div>
-          <div className="flex items-center gap-2.5 xl:gap-4 whitespace-nowrap shrink-0">
+          <div className="flex items-center gap-2 xl:gap-3.5 whitespace-nowrap shrink-0">
             {/* Quick topbar theme button */}
             <button 
               id="topbar-theme-toggle-btn"
@@ -80,10 +85,23 @@ export const Header: React.FC<HeaderProps> = ({
 
             <span className="text-[#444444]">|</span>
 
+            {/* Direct Call Showroom Link on Top Micro Bar */}
+            <a
+              href="tel:+919031005087"
+              onClick={() => trackCallTelemetry('Top Bar Call Showroom')}
+              className="flex items-center gap-1 text-[#ff4d6d] hover:text-white transition-colors cursor-pointer font-nissan-bold whitespace-nowrap"
+              title="Direct Hotline: +91 9031005087"
+            >
+              <Phone className="w-3 h-3 text-[#c3002f]" />
+              <span>Call Showroom: +91 9031005087</span>
+            </a>
+
+            <span className="hidden xl:inline text-[#444444]">|</span>
+
             <button 
               id="topbar-emi-btn"
               onClick={onOpenEmi}
-              className="flex items-center gap-1.5 hover:text-[#c3002f] transition-colors cursor-pointer text-[#d6d6d6] hover:text-white whitespace-nowrap"
+              className="hidden xl:flex items-center gap-1.5 hover:text-[#c3002f] transition-colors cursor-pointer text-[#d6d6d6] hover:text-white whitespace-nowrap"
               title="Calculate Monthly EMI"
             >
               <Calculator className="w-3 h-3 text-[#c3002f]" />
@@ -92,11 +110,11 @@ export const Header: React.FC<HeaderProps> = ({
             <button 
               id="topbar-brochure-btn"
               onClick={onOpenBrochure}
-              className="flex items-center gap-1.5 hover:text-[#c3002f] transition-colors cursor-pointer text-[#d6d6d6] hover:text-white whitespace-nowrap"
+              className="hidden xl:flex items-center gap-1.5 hover:text-[#c3002f] transition-colors cursor-pointer text-[#d6d6d6] hover:text-white whitespace-nowrap"
               title="Download Vehicle Brochure"
             >
               <FileText className="w-3 h-3 text-[#c3002f]" />
-              <span>Download Brochure</span>
+              <span>Brochure</span>
             </button>
             <button 
               id="topbar-find-dealer-btn"
@@ -117,36 +135,24 @@ export const Header: React.FC<HeaderProps> = ({
 
             <span className="text-[#444444]">|</span>
 
-            {/* Direct Dashboard Access Button */}
-            <button
-              id="topbar-customer-dashboard-btn"
-              onClick={onOpenCustomerDashboard}
-              className="flex items-center gap-1 text-white hover:text-[#c3002f] transition-colors cursor-pointer whitespace-nowrap font-nissan-bold bg-neutral-800 hover:bg-neutral-700 px-2 py-0.5 rounded-xs"
-              title="View Customer Dashboard (Test Drives, Service Bay, Configurations, GST Invoices)"
-            >
-              <Car className="w-3 h-3 text-[#c3002f]" />
-              <span>My Dashboard</span>
-            </button>
-
             {user ? (
               <div className="relative shrink-0">
                 <button
                   id="topbar-user-menu-btn"
                   onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                  className="flex items-center gap-1 text-white hover:text-[#c3002f] transition-colors cursor-pointer whitespace-nowrap"
+                  className="flex items-center gap-1 text-white hover:text-[#c3002f] transition-colors cursor-pointer whitespace-nowrap font-nissan-bold"
+                  title="My Account"
                 >
-                  <span className="w-3.5 h-3.5 rounded-full bg-[#c3002f] text-white text-[8.5px] flex items-center justify-center font-nissan-bold">
-                    {(user.name || user.fullName || 'User').charAt(0).toUpperCase()}
-                  </span>
-                  <span>Hi, {(user.name || user.fullName || 'User').split(' ')[0]}</span>
+                  <User className="w-3 h-3 text-[#c3002f]" />
+                  <span>My Account</span>
                   <ChevronDown className="w-2.5 h-2.5 text-neutral-400" />
                 </button>
 
                 {userDropdownOpen && (
                   <div className="absolute right-0 top-full mt-1.5 w-60 bg-white dark:bg-[#161616] text-[#111111] dark:text-white border border-[#e5e5e5] dark:border-[#2e2e2e] shadow-xl py-2 z-50 normal-case">
                     <div className="px-4 py-2 border-b border-[#f0f0f0] dark:border-[#252525]">
-                      <div className="text-[13px] font-nissan-bold">{user.name || user.fullName || 'User'}</div>
-                      <div className="text-[11px] text-[#777777] dark:text-[#a0a0a0] truncate">{user.email || ''}</div>
+                      <div className="text-[13px] font-nissan-bold">My Account</div>
+                      <div className="text-[11px] text-[#777777] dark:text-[#a0a0a0] truncate">{user.email || 'Authorized Member'}</div>
                     </div>
                     <button
                       onClick={() => {
@@ -155,7 +161,7 @@ export const Header: React.FC<HeaderProps> = ({
                       }}
                       className="w-full text-left px-4 py-2 text-[12px] text-[#c3002f] hover:bg-red-50 dark:hover:bg-red-950/20 flex items-center justify-between font-nissan-bold border-b border-[#f0f0f0] dark:border-[#252525] cursor-pointer"
                     >
-                      <span>Customer Dashboard</span>
+                      <span>Invoices & Bookings</span>
                       <Car className="w-3.5 h-3.5" />
                     </button>
                     <button
@@ -229,15 +235,15 @@ export const Header: React.FC<HeaderProps> = ({
               <TaraNissanLogo theme={darkMode ? 'dark' : 'light'} size="md" />
             </a>
 
-            {/* Desktop Navigation Links - Refined compact font size & strictly one-line */}
-            <nav className="hidden lg:flex items-center space-x-1 xl:space-x-2 shrink-0" aria-label="Main Navigation">
+            {/* Desktop Navigation Links - Visible on XL screens (1280px+); on Tablet (Landscape & Portrait) Menu Icon is used */}
+            <nav className="hidden xl:flex items-center space-x-1.5 shrink-0" aria-label="Main Navigation">
               {/* Vehicles dropdown */}
               <div className="relative shrink-0">
                 <button
                   id="nav-vehicles-dropdown-btn"
                   onClick={() => setVehiclesDropdownOpen(!vehiclesDropdownOpen)}
                   onMouseEnter={() => setVehiclesDropdownOpen(true)}
-                  className="btn-mui-text text-[11px] xl:text-[11.5px] font-nissan-bold tracking-[0.2px] text-[#111111] dark:text-neutral-100 hover:text-[#c3002f] dark:hover:text-[#ff3b5c] py-1 px-2.5 flex items-center gap-1 cursor-pointer transition-colors whitespace-nowrap shrink-0"
+                  className="btn-mui-text text-[11.5px] font-nissan-bold tracking-[0.2px] text-[#111111] dark:text-neutral-100 hover:text-[#c3002f] dark:hover:text-[#ff3b5c] py-1 px-2.5 flex items-center gap-1 cursor-pointer transition-colors whitespace-nowrap shrink-0"
                 >
                   <span>Vehicles</span>
                   <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${vehiclesDropdownOpen ? 'rotate-180 text-[#c3002f]' : ''}`} />
@@ -314,7 +320,7 @@ export const Header: React.FC<HeaderProps> = ({
               <button
                 id="nav-showroom-btn"
                 onClick={() => scrollToSection('vehicle-lineup-section')}
-                className="btn-mui-text text-[11px] xl:text-[11.5px] font-nissan-bold tracking-[0.2px] text-[#111111] dark:text-neutral-100 hover:text-[#c3002f] dark:hover:text-[#ff3b5c] py-1 px-2.5 cursor-pointer whitespace-nowrap shrink-0"
+                className="btn-mui-text text-[11.5px] font-nissan-bold tracking-[0.2px] text-[#111111] dark:text-neutral-100 hover:text-[#c3002f] dark:hover:text-[#ff3b5c] py-1 px-2.5 cursor-pointer whitespace-nowrap shrink-0"
               >
                 Showroom
               </button>
@@ -322,7 +328,7 @@ export const Header: React.FC<HeaderProps> = ({
               <button
                 id="nav-emi-btn"
                 onClick={onOpenEmi}
-                className="btn-mui-text text-[11px] xl:text-[11.5px] font-nissan-bold tracking-[0.2px] text-[#111111] dark:text-neutral-100 hover:text-[#c3002f] dark:hover:text-[#ff3b5c] py-1 px-2.5 cursor-pointer whitespace-nowrap shrink-0"
+                className="btn-mui-text text-[11.5px] font-nissan-bold tracking-[0.2px] text-[#111111] dark:text-neutral-100 hover:text-[#c3002f] dark:hover:text-[#ff3b5c] py-1 px-2.5 cursor-pointer whitespace-nowrap shrink-0"
               >
                 Check EMI
               </button>
@@ -330,7 +336,7 @@ export const Header: React.FC<HeaderProps> = ({
               <button
                 id="nav-brochure-btn"
                 onClick={onOpenBrochure}
-                className="btn-mui-text text-[11px] xl:text-[11.5px] font-nissan-bold tracking-[0.2px] text-[#111111] dark:text-neutral-100 hover:text-[#c3002f] dark:hover:text-[#ff3b5c] py-1 px-2.5 cursor-pointer whitespace-nowrap shrink-0"
+                className="btn-mui-text text-[11.5px] font-nissan-bold tracking-[0.2px] text-[#111111] dark:text-neutral-100 hover:text-[#c3002f] dark:hover:text-[#ff3b5c] py-1 px-2.5 cursor-pointer whitespace-nowrap shrink-0"
               >
                 Brochure
               </button>
@@ -338,191 +344,59 @@ export const Header: React.FC<HeaderProps> = ({
               <button
                 id="nav-dealers-btn"
                 onClick={onOpenDealer}
-                className="btn-mui-text text-[11px] xl:text-[11.5px] font-nissan-bold tracking-[0.2px] text-[#111111] dark:text-neutral-100 hover:text-[#c3002f] dark:hover:text-[#ff3b5c] py-1 px-2.5 cursor-pointer whitespace-nowrap shrink-0"
+                className="btn-mui-text text-[11.5px] font-nissan-bold tracking-[0.2px] text-[#111111] dark:text-neutral-100 hover:text-[#c3002f] dark:hover:text-[#ff3b5c] py-1 px-2.5 cursor-pointer whitespace-nowrap shrink-0"
               >
                 Dealers
-              </button>
-
-              <button
-                id="nav-customer-dashboard-btn"
-                onClick={onOpenCustomerDashboard}
-                className="hidden xl:inline-flex btn-mui-text text-[11px] xl:text-[11.5px] font-nissan-bold tracking-[0.2px] text-[#c3002f] dark:text-[#ff4d6d] hover:underline py-1 px-2.5 cursor-pointer whitespace-nowrap shrink-0"
-              >
-                Customer Dashboard
               </button>
             </nav>
           </div>
 
-          {/* Action CTAs - Shrunk, single-line buttons */}
-          <div className="hidden lg:flex items-center space-x-2 shrink-0">
-            {/* Global Dark Mode Toggle Button with Tooltip */}
-            <div className="relative group/theme shrink-0">
-              <button
-                id="header-theme-toggle-btn"
-                onClick={onToggleDarkMode}
-                className="w-8 h-8 rounded-full border border-neutral-300 dark:border-neutral-700 hover:border-[#c3002f] dark:hover:border-[#c3002f] bg-neutral-50 dark:bg-[#1a1a1a] text-[#111111] dark:text-amber-400 hover:text-[#c3002f] dark:hover:text-amber-300 flex items-center justify-center transition-all duration-200 cursor-pointer shadow-xs"
-                title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-                aria-label={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-              >
-                {darkMode ? (
-                  <Sun className="w-4 h-4 transition-transform group-hover/theme:rotate-45" />
-                ) : (
-                  <Moon className="w-4 h-4 transition-transform group-hover/theme:-rotate-12" />
-                )}
-              </button>
-
-              {/* Tooltip on hover */}
-              <div 
-                role="tooltip"
-                className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-2.5 py-1 bg-[#111111] dark:bg-neutral-800 text-white text-[10.5px] font-nissan-bold tracking-wide rounded-xs shadow-lg whitespace-nowrap opacity-0 pointer-events-none group-hover/theme:opacity-100 transition-all duration-200 z-50"
-              >
-                {darkMode ? 'Light Mode' : 'Dark Mode'}
-                <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-[#111111] dark:bg-neutral-800 rotate-45" />
-              </div>
-            </div>
-
-            {/* Account Profile if signed in */}
-            {user && (
-              <div className="relative shrink-0">
-                <button
-                  id="header-user-profile-btn"
-                  onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                  className="flex items-center gap-1.5 py-1 px-2 border border-[#e5e5e5] dark:border-[#333333] hover:border-[#c3002f] transition-colors cursor-pointer bg-[#fafafa] dark:bg-[#181818] whitespace-nowrap shrink-0"
-                >
-                  <div className="w-5 h-5 rounded-full bg-[#c3002f] text-white flex items-center justify-center text-[10px] font-nissan-bold">
-                    {(user.name || user.fullName || 'User').charAt(0).toUpperCase()}
-                  </div>
-                  <span className="text-[11px] font-nissan-bold text-[#111111] dark:text-white whitespace-nowrap">
-                    {(user.name || user.fullName || 'User').split(' ')[0]}
-                  </span>
-                  <ChevronDown className={`w-3 h-3 transition-transform ${userDropdownOpen ? 'rotate-180 text-[#c3002f]' : 'text-gray-500'}`} />
-                </button>
-
-                {userDropdownOpen && (
-                  <div className="absolute right-0 top-full mt-1.5 w-64 bg-white dark:bg-[#161616] border border-[#e5e5e5] dark:border-[#2e2e2e] shadow-xl py-2 z-50 animate-in fade-in">
-                    <div className="px-4 py-2.5 border-b border-[#f0f0f0] dark:border-[#252525]">
-                      <div className="text-[14px] font-nissan-bold text-[#111111] dark:text-white">{user.name || user.fullName || 'User'}</div>
-                      <div className="text-[12px] text-[#777777] dark:text-[#a0a0a0] truncate">{user.email || ''}</div>
-                      <div className="text-[11px] text-[#c3002f] font-nissan-bold mt-1 uppercase">
-                        Tara Nissan Privileged Member
-                      </div>
-                    </div>
-
-                    <button
-                      onClick={() => {
-                        onOpenCustomerDashboard();
-                        setUserDropdownOpen(false);
-                      }}
-                      className="w-full text-left px-4 py-2.5 text-[13px] text-[#c3002f] hover:bg-red-50 dark:hover:bg-red-950/20 flex items-center justify-between font-nissan-bold border-b border-[#f0f0f0] dark:border-[#252525]"
-                    >
-                      <span>Customer Dashboard</span>
-                      <Car className="w-4 h-4 text-[#c3002f]" />
-                    </button>
-
-                    <button
-                      onClick={() => {
-                        onOpenTestDrive();
-                        setUserDropdownOpen(false);
-                      }}
-                      className="w-full text-left px-4 py-2.5 text-[13px] text-[#333333] dark:text-[#dddddd] hover:bg-[#f9f9f9] dark:hover:bg-[#202020] hover:text-[#c3002f] flex items-center justify-between"
-                    >
-                      <span>Bookings & Test Drives</span>
-                      <ShieldCheck className="w-4 h-4 text-gray-400" />
-                    </button>
-
-                    <button
-                      onClick={() => {
-                        onOpenEmi();
-                        setUserDropdownOpen(false);
-                      }}
-                      className="w-full text-left px-4 py-2.5 text-[13px] text-[#333333] dark:text-[#dddddd] hover:bg-[#f9f9f9] dark:hover:bg-[#202020] hover:text-[#c3002f] flex items-center justify-between border-b border-[#f0f0f0] dark:border-[#252525]"
-                    >
-                      <span>My EMI Quotes</span>
-                      <Calculator className="w-4 h-4 text-gray-400" />
-                    </button>
-
-                    <button
-                      onClick={() => {
-                        onSignOut();
-                        setUserDropdownOpen(false);
-                      }}
-                      className="w-full text-left px-4 py-2.5 text-[13px] text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 flex items-center gap-2 font-nissan-bold"
-                    >
-                      <LogOut className="w-4 h-4" />
-                      <span>SIGN OUT</span>
-                    </button>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* Book Test Drive Icon Button with Hover Tooltip */}
-            <div className="relative group/testdrive shrink-0">
-              <button
-                id="header-cta-testdrive"
-                onClick={onOpenTestDrive}
-                className="w-8 h-8 rounded-full border border-[#111111] dark:border-neutral-600 hover:border-[#c3002f] dark:hover:border-[#c3002f] bg-white dark:bg-[#1a1a1a] hover:bg-[#c3002f] dark:hover:bg-[#c3002f] text-[#111111] dark:text-white hover:text-white flex items-center justify-center transition-all duration-200 cursor-pointer shadow-xs"
-                title="Book Test Drive"
-                aria-label="Book Test Drive"
-              >
-                <Car className="w-4 h-4 transition-transform group-hover/testdrive:scale-110" />
-              </button>
-
-              {/* Tooltip on hover */}
-              <div 
-                role="tooltip"
-                className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-2.5 py-1 bg-[#111111] dark:bg-neutral-800 text-white text-[10.5px] font-nissan-bold tracking-wide rounded-xs shadow-lg whitespace-nowrap opacity-0 pointer-events-none group-hover/testdrive:opacity-100 transition-all duration-200 z-50"
-              >
-                Book Test Drive
-                <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-[#111111] dark:bg-neutral-800 rotate-45" />
-              </div>
-            </div>
-
+          {/* Action CTAs - Desktop only (XL: 1280px+) - Focused, no mode change button on menubar */}
+          <div className="hidden xl:flex items-center shrink-0">
+            {/* Book Online CTA */}
             <button
               id="header-cta-book"
               onClick={onOpenTestDrive}
-              className="btn-mui-contained text-[10.5px] xl:text-[11px] tracking-[0.2px] px-2.5 py-1 min-h-[32px] whitespace-nowrap shrink-0 leading-tight"
+              className="btn-mui-contained text-[11.5px] tracking-[0.2px] px-4 py-2 min-h-[36px] whitespace-nowrap shrink-0 leading-tight cursor-pointer font-nissan-bold shadow-xs hover:shadow-sm transition-all"
             >
               Book Online
             </button>
           </div>
 
-          {/* Mobile actions: Theme Toggle + Car icon for Book Test Drive + Hamburger Menu */}
-          <div className="lg:hidden flex items-center gap-1.5 sm:gap-2 shrink-0">
-            <button
-              id="mobile-theme-toggle-btn"
-              onClick={onToggleDarkMode}
-              className="w-8 h-8 rounded-full border border-neutral-300 dark:border-neutral-700 bg-neutral-100 dark:bg-[#1a1a1a] text-[#111111] dark:text-amber-400 hover:text-[#c3002f] flex items-center justify-center transition-transform active:scale-95 shadow-xs cursor-pointer"
-              title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-              aria-label={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-            >
-              {darkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4" />}
-            </button>
-            <button
-              id="mobile-testdrive-quick-btn"
-              onClick={onOpenTestDrive}
-              className="w-8 h-8 rounded-full bg-[#c3002f] hover:bg-[#a00026] text-white flex items-center justify-center transition-transform active:scale-95 shadow-xs cursor-pointer"
-              title="Book Test Drive"
-              aria-label="Book Test Drive"
-            >
-              <Car className="w-4 h-4" />
-            </button>
+          {/* Tablet & Mobile Header Action: Menu Icon required for both Tablet Portrait & Landscape (<1280px) */}
+          <div className="xl:hidden flex items-center shrink-0">
             <button
               id="mobile-menu-toggle-btn"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="w-8 h-8 flex items-center justify-center text-[#111111] dark:text-white hover:text-[#c3002f] focus:outline-none cursor-pointer"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 sm:py-2 text-[#111111] dark:text-white hover:text-[#c3002f] hover:bg-neutral-100 dark:hover:bg-[#202020] transition-colors cursor-pointer rounded-xs"
               aria-label="Toggle navigation menu"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              <span className="text-[12px] sm:text-[13px] font-nissan-bold uppercase tracking-wider">
+                {mobileMenuOpen ? 'CLOSE' : 'MENU'}
+              </span>
+              {mobileMenuOpen ? <X className="w-5 h-5 sm:w-6 sm:h-6 text-[#c3002f]" /> : <Menu className="w-5 h-5 sm:w-6 sm:h-6" />}
             </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Drawer Menu */}
+      {/* Mobile & Tablet Drawer Menu - Required across all viewports < 1280px (Tablet Landscape & Portrait) */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-white dark:bg-[#121212] border-t border-[#e5e5e5] dark:border-[#262626] px-4 pt-3 pb-8 space-y-3 shadow-lg max-h-[calc(100dvh-64px)] overflow-y-auto">
-          {/* Theme switch row in mobile drawer */}
+        <div className="xl:hidden bg-white dark:bg-[#121212] border-t border-[#e5e5e5] dark:border-[#262626] px-4 sm:px-8 pt-4 pb-8 space-y-3.5 shadow-xl max-h-[calc(100dvh-64px)] overflow-y-auto">
+          {/* Primary Book Online Action Button placed directly in Menu section */}
+          <button
+            id="menu-book-online-btn"
+            onClick={() => {
+              onOpenTestDrive();
+              setMobileMenuOpen(false);
+            }}
+            className="w-full py-3 sm:py-3.5 px-4 bg-[#c3002f] hover:bg-[#a00026] text-white font-nissan-bold text-[13px] sm:text-[14px] uppercase tracking-wider flex items-center justify-center gap-2 rounded-xs shadow-sm transition-all active:scale-[0.99] cursor-pointer"
+          >
+            <Car className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+            <span>Book Online / Test Drive</span>
+          </button>
+
+          {/* Theme switch row in mobile/tablet drawer (accessible in preferences without cluttering menubar) */}
           <div className="p-3 bg-[#f8f8f8] dark:bg-[#1a1a1a] border border-[#e8e8e8] dark:border-[#2a2a2a] flex items-center justify-between">
             <div className="flex items-center gap-2 text-[12px] font-nissan-bold text-[#111111] dark:text-white uppercase tracking-wider">
               {darkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-neutral-600" />}
@@ -546,11 +420,11 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* 24x7 Helpline Banner */}
           <div className="p-2.5 bg-[#f8f8f8] dark:bg-[#1a1a1a] border border-[#e8e8e8] dark:border-[#2a2a2a] flex items-center justify-between text-[11px] font-nissan-regular">
-            <div className="flex items-center gap-1.5 text-[#555555] dark:text-[#a0a0a0]">
+            <a href="tel:18002093456" className="flex items-center gap-1.5 text-[#555555] dark:text-[#a0a0a0]">
               <PhoneCall className="w-3.5 h-3.5 text-[#c3002f]" />
-              <span>Helpdesk: <strong className="text-[#111111] dark:text-white font-nissan-bold">1800 209 3456</strong></span>
-            </div>
-            <span className="text-[#c3002f] font-nissan-bold uppercase text-[10px] tracking-wider">Toll Free</span>
+              <span>Toll Free: <strong className="text-[#111111] dark:text-white font-nissan-bold">1800 209 3456</strong></span>
+            </a>
+            <span className="text-[#c3002f] font-nissan-bold uppercase text-[10px] tracking-wider">24x7</span>
           </div>
 
           {/* User Mobile Card */}
@@ -558,11 +432,11 @@ export const Header: React.FC<HeaderProps> = ({
             <div className="bg-[#f6f6f6] dark:bg-[#1a1a1a] p-3 border border-[#e5e5e5] dark:border-[#2a2a2a] flex items-center justify-between">
               <div className="flex items-center gap-2.5">
                 <div className="w-7 h-7 rounded-full bg-[#c3002f] text-white flex items-center justify-center font-nissan-bold text-[12px]">
-                  {(user.name || user.fullName || 'User').charAt(0).toUpperCase()}
+                  <User className="w-4 h-4 text-white" />
                 </div>
                 <div>
-                  <div className="text-[13px] font-nissan-bold text-[#111111] dark:text-white">{user.name || user.fullName || 'User'}</div>
-                  <div className="text-[10.5px] text-[#666666] dark:text-[#a0a0a0]">{user.city || 'Tara Nissan Member'}</div>
+                  <div className="text-[13px] font-nissan-bold text-[#111111] dark:text-white">My Account</div>
+                  <div className="text-[10.5px] text-[#666666] dark:text-[#a0a0a0]">{user.email || 'Tara Nissan Member'}</div>
                 </div>
               </div>
               <button
@@ -601,35 +475,35 @@ export const Header: React.FC<HeaderProps> = ({
           <div className="text-[11px] font-nissan-bold tracking-wider text-[#888888] dark:text-[#a0a0a0] uppercase pt-1">
             Nissan Lineup
           </div>
-          <div className="grid grid-cols-2 gap-2 pb-1">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pb-1">
             <button
               onClick={() => { onSelectCar('nissan-tekton'); setMobileMenuOpen(false); }}
-              className="text-left p-2.5 bg-[#f9f9f9] dark:bg-[#1a1a1a] hover:bg-[#f2f2f2] dark:hover:bg-[#252525] border border-[#eeeeee] dark:border-[#2c2c2c] text-[12.5px] font-nissan-bold text-[#111111] dark:text-white cursor-pointer"
+              className="text-left p-2.5 bg-[#f9f9f9] dark:bg-[#1a1a1a] hover:bg-[#f2f2f2] dark:hover:bg-[#252525] border border-[#eeeeee] dark:border-[#2c2c2c] text-[12.5px] font-nissan-bold text-[#111111] dark:text-white cursor-pointer rounded-xs"
             >
               Tekton (New)
             </button>
             <button
               onClick={() => { onSelectCar('nissan-gravite'); setMobileMenuOpen(false); }}
-              className="text-left p-2.5 bg-[#f9f9f9] dark:bg-[#1a1a1a] hover:bg-[#f2f2f2] dark:hover:bg-[#252525] border border-[#eeeeee] dark:border-[#2c2c2c] text-[12.5px] font-nissan-bold text-[#111111] dark:text-white cursor-pointer"
+              className="text-left p-2.5 bg-[#f9f9f9] dark:bg-[#1a1a1a] hover:bg-[#f2f2f2] dark:hover:bg-[#252525] border border-[#eeeeee] dark:border-[#2c2c2c] text-[12.5px] font-nissan-bold text-[#111111] dark:text-white cursor-pointer rounded-xs"
             >
               Gravite & CNG
             </button>
             <button
               onClick={() => { onSelectCar('nissan-magnite'); setMobileMenuOpen(false); }}
-              className="text-left p-2.5 bg-[#f9f9f9] dark:bg-[#1a1a1a] hover:bg-[#f2f2f2] dark:hover:bg-[#252525] border border-[#eeeeee] dark:border-[#2c2c2c] text-[12.5px] font-nissan-bold text-[#111111] dark:text-white cursor-pointer"
+              className="text-left p-2.5 bg-[#f9f9f9] dark:bg-[#1a1a1a] hover:bg-[#f2f2f2] dark:hover:bg-[#252525] border border-[#eeeeee] dark:border-[#2c2c2c] text-[12.5px] font-nissan-bold text-[#111111] dark:text-white cursor-pointer rounded-xs"
             >
               New Magnite
             </button>
             <button
               onClick={() => { onSelectCar('nissan-x-trail'); setMobileMenuOpen(false); }}
-              className="text-left p-2.5 bg-[#f9f9f9] dark:bg-[#1a1a1a] hover:bg-[#f2f2f2] dark:hover:bg-[#252525] border border-[#eeeeee] dark:border-[#2c2c2c] text-[12.5px] font-nissan-bold text-[#111111] dark:text-white cursor-pointer"
+              className="text-left p-2.5 bg-[#f9f9f9] dark:bg-[#1a1a1a] hover:bg-[#f2f2f2] dark:hover:bg-[#252525] border border-[#eeeeee] dark:border-[#2c2c2c] text-[12.5px] font-nissan-bold text-[#111111] dark:text-white cursor-pointer rounded-xs"
             >
               X-TRAIL 7-Seater
             </button>
           </div>
 
           <button
-            onClick={() => scrollToSection('vehicle-lineup-section')}
+            onClick={() => { scrollToSection('vehicle-lineup-section'); setMobileMenuOpen(false); }}
             className="w-full text-left py-2.5 border-b border-[#f0f0f0] dark:border-[#262626] text-[13px] font-nissan-bold text-[#111111] dark:text-white hover:text-[#c3002f] dark:hover:text-[#ff3b5c] transition-colors cursor-pointer"
           >
             Showroom & All Vehicles
@@ -658,37 +532,6 @@ export const Header: React.FC<HeaderProps> = ({
             <span>Find A Dealer</span>
             <MapPin className="w-4 h-4 text-[#c3002f]" />
           </button>
-
-          <button
-            onClick={() => { onOpenCustomerDashboard(); setMobileMenuOpen(false); }}
-            className="w-full text-left py-2.5 border-b border-[#f0f0f0] dark:border-[#262626] text-[13px] font-nissan-bold text-[#c3002f] hover:underline flex items-center justify-between cursor-pointer"
-          >
-            <span>Customer Dashboard (Invoices & Drives)</span>
-            <Car className="w-4 h-4 text-[#c3002f]" />
-          </button>
-
-          <div className="pt-2 flex flex-col gap-2">
-            <a
-              id="mobile-menu-call-link"
-              href="tel:+919031005087"
-              onClick={() => {
-                trackCallTelemetry('Mobile Menu Direct Call');
-                setMobileMenuOpen(false);
-              }}
-              className="w-full py-2.5 px-3 bg-[#c3002f] hover:bg-[#a00026] text-white font-nissan-bold text-[12px] uppercase tracking-wider flex items-center justify-center gap-2 rounded-xs shadow-sm transition-colors"
-            >
-              <Phone className="w-4 h-4 animate-bounce" />
-              <span>Call Tara Nissan: +91 9031005087 (9 AM - 7:30 PM)</span>
-            </a>
-
-            <button
-              onClick={() => { onOpenTestDrive(); setMobileMenuOpen(false); }}
-              className="w-full btn-mui-contained py-2.5 justify-center flex items-center gap-2"
-            >
-              <Car className="w-4 h-4" />
-              <span>Book A Test Drive</span>
-            </button>
-          </div>
         </div>
       )}
     </header>
