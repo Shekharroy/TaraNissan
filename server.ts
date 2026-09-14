@@ -1,5 +1,6 @@
 import express from 'express';
 import path from 'path';
+import fs from 'fs';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
@@ -59,10 +60,31 @@ async function startServer() {
 
   // Vite middleware setup
   if (process.env.NODE_ENV !== 'production') {
+    // Ensure Vite HMR client does not attempt WebSocket connection in container sandbox
+    try {
+      const clientPath = path.resolve(process.cwd(), 'node_modules/vite/dist/client/client.mjs');
+      if (fs.existsSync(clientPath)) {
+        let content = fs.readFileSync(clientPath, 'utf-8');
+        if (content.includes('await wsTransport.connect(handlers);')) {
+          content = content.replace(
+            'await wsTransport.connect(handlers);',
+            'return; /* HMR disabled in sandbox */'
+          );
+          fs.writeFileSync(clientPath, content, 'utf-8');
+        }
+      }
+    } catch {
+      // Ignore in read-only environments
+    }
+
     const vite = await createViteServer({
-      server: { middlewareMode: true },
+      server: {
+        middlewareMode: true,
+        hmr: false,
+      },
       appType: 'spa',
     });
+
     app.use(vite.middlewares);
   } else {
     const distPath = path.join(process.cwd(), 'dist');

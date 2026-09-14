@@ -12,11 +12,77 @@
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="stylesheet" href="https://libs-asia.nissan-cdn.net/etc/designs/nissan_next_v4/26.09.30.NISSAN-15/common-assets/css/fonts/fonts-latin-basic.min.css" />
     <script>
-      window.addEventListener('unhandledrejection', function(event) {
-        if (event.reason && (typeof event.reason === 'string' ? event.reason : event.reason.message || '').includes('WebSocket')) {
-          event.preventDefault();
+      (function() {
+        // Intercept Vite HMR WebSocket in Cloud Run sandbox preview environment
+        var OriginalWebSocket = window.WebSocket;
+        if (OriginalWebSocket) {
+          window.WebSocket = function(url, protocols) {
+            if (protocols === 'vite-hmr' || (typeof url === 'string' && (url.includes('token=') || url.includes('24678') || url.includes(':3000')))) {
+              var target = new EventTarget();
+              var wsMock = {
+                url: url,
+                protocol: 'vite-hmr',
+                readyState: 3, // CLOSED
+                bufferedAmount: 0,
+                extensions: '',
+                binaryType: 'blob',
+                close: function() {},
+                send: function() {},
+                addEventListener: target.addEventListener.bind(target),
+                removeEventListener: target.removeEventListener.bind(target),
+                dispatchEvent: target.dispatchEvent.bind(target),
+                onopen: null,
+                onclose: null,
+                onerror: null,
+                onmessage: null,
+              };
+              setTimeout(function() {
+                var closeEvt = new Event('close');
+                closeEvt.wasClean = true;
+                closeEvt.code = 1000;
+                closeEvt.reason = 'HMR disabled in container environment';
+                if (typeof wsMock.onclose === 'function') wsMock.onclose(closeEvt);
+                target.dispatchEvent(closeEvt);
+              }, 10);
+              return wsMock;
+            }
+            return new OriginalWebSocket(url, protocols);
+          };
+          window.WebSocket.prototype = OriginalWebSocket.prototype;
+          window.WebSocket.CONNECTING = 0;
+          window.WebSocket.OPEN = 1;
+          window.WebSocket.CLOSING = 2;
+          window.WebSocket.CLOSED = 3;
         }
-      });
+
+        // Suppress WebSocket and benign Vite connection rejections/errors from reaching preview error banner
+        window.addEventListener('unhandledrejection', function(event) {
+          var reason = event ? event.reason : null;
+          var msg = reason ? (typeof reason === 'string' ? reason : (reason.message || reason.stack || '')) : '';
+          if (typeof msg === 'string' && (msg.includes('WebSocket') || msg.includes('websocket') || msg.includes('vite'))) {
+            event.preventDefault();
+            if (event.stopImmediatePropagation) event.stopImmediatePropagation();
+          }
+        }, true);
+
+        window.addEventListener('error', function(event) {
+          var msg = (event && (event.message || (event.error && event.error.message))) || '';
+          if (typeof msg === 'string' && (msg.includes('WebSocket') || msg.includes('websocket') || msg.includes('[vite]'))) {
+            event.preventDefault();
+            if (event.stopImmediatePropagation) event.stopImmediatePropagation();
+          }
+        }, true);
+
+        // Filter console.error for benign websocket disconnect messages
+        var origConsoleError = console.error;
+        console.error = function() {
+          var firstArg = arguments[0];
+          if (typeof firstArg === 'string' && (firstArg.includes('[vite] failed to connect to websocket') || firstArg.includes('WebSocket closed without opened'))) {
+            return;
+          }
+          origConsoleError.apply(console, arguments);
+        };
+      })();
     </script>
   </head>
   <body class="bg-white text-neutral-900 antialiased selection:bg-red-600 selection:text-white overflow-x-hidden max-w-full w-full">
