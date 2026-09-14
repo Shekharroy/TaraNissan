@@ -49,98 +49,97 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <header className="sticky top-0 z-40 bg-white dark:bg-[#0d0d0d] border-b border-[#e5e5e5] dark:border-[#222222] shadow-xs transition-colors duration-200 w-full">
       {/* Top micro bar for dealer, tools & emergency helpline */}
-      <div className="hidden lg:block bg-[#141414] dark:bg-[#080808] text-white py-1 px-4 xl:px-8 border-b border-[#222222] dark:border-[#1a1a1a]">
+      <div className="hidden lg:block bg-[#141414] dark:bg-[#080808] text-white py-1.5 px-4 xl:px-8 border-b border-[#222222] dark:border-[#1a1a1a]">
         <div className="max-w-7xl mx-auto flex justify-between items-center text-[10.5px] xl:text-[11px] tracking-wide uppercase font-nissan-regular min-w-0">
-          <div className="flex items-center gap-3 xl:gap-4 whitespace-nowrap shrink-0">
+          {/* Left: Toll-Free 24x7 Helpline + Direct Showroom Line + Dealership Badge in attractive layout */}
+          <div className="flex items-center gap-3.5 xl:gap-4 whitespace-nowrap shrink-0">
             <a 
               href="tel:18002093456" 
-              className="flex items-center gap-1.5 text-[#9e9e9e] hover:text-white transition-colors cursor-pointer"
-              title="Call Nissan Toll-Free Helpline"
+              className="inline-flex items-center gap-1.5 group text-neutral-300 hover:text-white transition-colors cursor-pointer py-0.5"
+              title="Call Nissan Toll-Free Customer Care (24x7)"
             >
-              <span>Toll-Free:</span>
-              <strong className="text-white font-nissan-bold">1800 209 3456</strong>
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+              <span className="text-[#9e9e9e] text-[10px] tracking-wider uppercase font-nissan-regular">Toll-Free 24x7:</span>
+              <strong className="text-white font-nissan-bold tracking-wide group-hover:text-[#c3002f] transition-colors">1800 209 3456</strong>
             </a>
-          </div>
-          <div className="flex items-center gap-2 xl:gap-3.5 whitespace-nowrap shrink-0">
-            {/* Quick topbar theme button */}
-            <button 
-              id="topbar-theme-toggle-btn"
-              onClick={onToggleDarkMode}
-              className="flex items-center gap-1.5 hover:text-[#c3002f] transition-colors cursor-pointer text-[#d6d6d6] hover:text-white whitespace-nowrap"
-              title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-              aria-label={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-            >
-              {darkMode ? (
-                <>
-                  <Sun className="w-3 h-3 text-amber-400" />
-                  <span>Light Mode</span>
-                </>
-              ) : (
-                <>
-                  <Moon className="w-3 h-3 text-neutral-400" />
-                  <span>Dark Mode</span>
-                </>
-              )}
-            </button>
 
-            <span className="text-[#444444]">|</span>
+            <span className="h-3 w-px bg-neutral-700" />
 
-            {/* Direct Call Showroom Link on Top Micro Bar */}
             <a
               href="tel:+919031005087"
               onClick={() => trackCallTelemetry('Top Bar Call Showroom')}
-              className="flex items-center gap-1 text-[#ff4d6d] hover:text-white transition-colors cursor-pointer font-nissan-bold whitespace-nowrap"
-              title="Direct Hotline: +91 9031005087"
+              className="inline-flex items-center gap-1.5 group text-neutral-300 hover:text-white transition-colors cursor-pointer py-0.5"
+              title="Tara Nissan Direct Showroom Hotline: +91 9031005087"
             >
-              <Phone className="w-3 h-3 text-[#c3002f]" />
-              <span>Call Showroom: +91 9031005087</span>
+              <Phone className="w-3 h-3 text-[#c3002f] shrink-0" />
+              <span className="text-[#9e9e9e] text-[10px] tracking-wider uppercase font-nissan-regular">Showroom:</span>
+              <strong className="text-white font-nissan-bold tracking-wide group-hover:text-[#c3002f] transition-colors">+91 9031005087</strong>
             </a>
 
-            <span className="hidden xl:inline text-[#444444]">|</span>
+            <span className="hidden xl:inline-block h-3 w-px bg-neutral-700" />
 
+            <span className="hidden xl:inline-flex items-center gap-1 text-[10px] tracking-wider text-neutral-400 uppercase font-nissan-regular">
+              <span className="text-neutral-200 font-nissan-bold">Tara Nissan</span>
+              <span>• Bankat Motihari</span>
+            </span>
+          </div>
+
+          {/* Right: Essential customer tools with consistent spacing and dividers (No mode toggle) */}
+          <div className="flex items-center gap-3 xl:gap-3.5 whitespace-nowrap shrink-0">
             <button 
               id="topbar-emi-btn"
               onClick={onOpenEmi}
-              className="hidden xl:flex items-center gap-1.5 hover:text-[#c3002f] transition-colors cursor-pointer text-[#d6d6d6] hover:text-white whitespace-nowrap"
+              className="flex items-center gap-1 text-[#d6d6d6] hover:text-[#c3002f] transition-colors cursor-pointer whitespace-nowrap py-0.5"
               title="Calculate Monthly EMI"
             >
               <Calculator className="w-3 h-3 text-[#c3002f]" />
               <span>EMI Calculator</span>
             </button>
+
+            <span className="h-3 w-px bg-neutral-700" />
+
             <button 
               id="topbar-brochure-btn"
               onClick={onOpenBrochure}
-              className="hidden xl:flex items-center gap-1.5 hover:text-[#c3002f] transition-colors cursor-pointer text-[#d6d6d6] hover:text-white whitespace-nowrap"
+              className="flex items-center gap-1 text-[#d6d6d6] hover:text-[#c3002f] transition-colors cursor-pointer whitespace-nowrap py-0.5"
               title="Download Vehicle Brochure"
             >
               <FileText className="w-3 h-3 text-[#c3002f]" />
               <span>Brochure</span>
             </button>
+
+            <span className="h-3 w-px bg-neutral-700" />
+
             <button 
               id="topbar-find-dealer-btn"
               onClick={onOpenDealer}
-              className="flex items-center gap-1.5 hover:text-[#c3002f] transition-colors cursor-pointer text-[#d6d6d6] hover:text-white whitespace-nowrap"
+              className="flex items-center gap-1 text-[#d6d6d6] hover:text-[#c3002f] transition-colors cursor-pointer whitespace-nowrap py-0.5"
+              title="Locate Showroom & Service Workshop"
             >
               <MapPin className="w-3 h-3 text-[#c3002f]" />
-              <span>Find A Dealer</span>
+              <span>Find Dealer</span>
             </button>
+
+            <span className="h-3 w-px bg-neutral-700" />
+
             <button 
               id="topbar-test-drive-btn"
               onClick={onOpenTestDrive}
-              className="flex items-center gap-1.5 hover:text-[#c3002f] transition-colors cursor-pointer text-[#d6d6d6] hover:text-white whitespace-nowrap"
+              className="flex items-center gap-1 text-[#d6d6d6] hover:text-[#c3002f] transition-colors cursor-pointer whitespace-nowrap py-0.5"
+              title="Schedule a Test Drive at Home or Showroom"
             >
               <PhoneCall className="w-3 h-3 text-[#c3002f]" />
               <span>Book Test Drive</span>
             </button>
 
-            <span className="text-[#444444]">|</span>
+            <span className="h-3 w-px bg-neutral-700" />
 
             {user ? (
               <div className="relative shrink-0">
                 <button
                   id="topbar-user-menu-btn"
                   onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                  className="flex items-center gap-1 text-white hover:text-[#c3002f] transition-colors cursor-pointer whitespace-nowrap font-nissan-bold"
+                  className="flex items-center gap-1 text-white hover:text-[#c3002f] transition-colors cursor-pointer whitespace-nowrap font-nissan-bold py-0.5"
                   title="My Account"
                 >
                   <User className="w-3 h-3 text-[#c3002f]" />
@@ -202,7 +201,7 @@ export const Header: React.FC<HeaderProps> = ({
                 <button
                   id="topbar-signin-btn"
                   onClick={() => onOpenAuth('signin')}
-                  className="flex items-center gap-1 hover:text-[#c3002f] transition-colors cursor-pointer font-nissan-bold whitespace-nowrap"
+                  className="flex items-center gap-1 hover:text-[#c3002f] transition-colors cursor-pointer font-nissan-bold whitespace-nowrap py-0.5"
                 >
                   <User className="w-3 h-3 text-[#c3002f]" />
                   <span>Sign In</span>
@@ -211,7 +210,7 @@ export const Header: React.FC<HeaderProps> = ({
                 <button
                   id="topbar-signup-btn"
                   onClick={() => onOpenAuth('signup')}
-                  className="text-[#c3002f] hover:underline transition-colors cursor-pointer font-nissan-bold whitespace-nowrap"
+                  className="text-[#c3002f] hover:underline transition-colors cursor-pointer font-nissan-bold whitespace-nowrap py-0.5"
                 >
                   Sign Up
                 </button>
@@ -221,29 +220,31 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
       </div>
 
-      {/* Main navigation header */}
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-15 sm:h-16 lg:h-[86px]">
-          {/* Custom Tara Nissan Brand Logo */}
-          <div className="flex items-center gap-4 sm:gap-6 xl:gap-8 min-w-0">
+      {/* Main navigation header (Subheader) */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-15 sm:h-16 lg:h-[84px]">
+          {/* Brand Logo on Left */}
+          <div className="flex items-center shrink-0">
             <a 
               href="#" 
               id="header-tara-nissan-logo-link"
               className="flex items-center focus:outline-none shrink-0 py-1"
-              title="Tara Nissan"
+              title="Tara Nissan - Authorized Dealer"
             >
               <TaraNissanLogo theme={darkMode ? 'dark' : 'light'} size="md" />
             </a>
+          </div>
 
-            {/* Desktop Navigation Links - Visible on XL screens (1280px+); on Tablet (Landscape & Portrait) Menu Icon is used */}
-            <nav className="hidden xl:flex items-center space-x-1.5 shrink-0" aria-label="Main Navigation">
+          {/* Desktop Right Side: Menu Options AND Book Online Button grouped together with cohesive spacing */}
+          <div className="hidden xl:flex items-center gap-4 shrink-0">
+            <nav className="flex items-center space-x-1 shrink-0" aria-label="Main Navigation">
               {/* Vehicles dropdown */}
               <div className="relative shrink-0">
                 <button
                   id="nav-vehicles-dropdown-btn"
                   onClick={() => setVehiclesDropdownOpen(!vehiclesDropdownOpen)}
                   onMouseEnter={() => setVehiclesDropdownOpen(true)}
-                  className="btn-mui-text text-[11.5px] font-nissan-bold tracking-[0.2px] text-[#111111] dark:text-neutral-100 hover:text-[#c3002f] dark:hover:text-[#ff3b5c] py-1 px-2.5 flex items-center gap-1 cursor-pointer transition-colors whitespace-nowrap shrink-0"
+                  className="btn-mui-text text-[11.5px] font-nissan-bold tracking-[0.2px] text-[#111111] dark:text-neutral-100 hover:text-[#c3002f] dark:hover:text-[#ff3b5c] py-1.5 px-3 flex items-center gap-1 cursor-pointer transition-colors whitespace-nowrap shrink-0"
                 >
                   <span>Vehicles</span>
                   <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${vehiclesDropdownOpen ? 'rotate-180 text-[#c3002f]' : ''}`} />
@@ -320,7 +321,7 @@ export const Header: React.FC<HeaderProps> = ({
               <button
                 id="nav-showroom-btn"
                 onClick={() => scrollToSection('vehicle-lineup-section')}
-                className="btn-mui-text text-[11.5px] font-nissan-bold tracking-[0.2px] text-[#111111] dark:text-neutral-100 hover:text-[#c3002f] dark:hover:text-[#ff3b5c] py-1 px-2.5 cursor-pointer whitespace-nowrap shrink-0"
+                className="btn-mui-text text-[11.5px] font-nissan-bold tracking-[0.2px] text-[#111111] dark:text-neutral-100 hover:text-[#c3002f] dark:hover:text-[#ff3b5c] py-1.5 px-3 cursor-pointer whitespace-nowrap shrink-0"
               >
                 Showroom
               </button>
@@ -328,7 +329,7 @@ export const Header: React.FC<HeaderProps> = ({
               <button
                 id="nav-emi-btn"
                 onClick={onOpenEmi}
-                className="btn-mui-text text-[11.5px] font-nissan-bold tracking-[0.2px] text-[#111111] dark:text-neutral-100 hover:text-[#c3002f] dark:hover:text-[#ff3b5c] py-1 px-2.5 cursor-pointer whitespace-nowrap shrink-0"
+                className="btn-mui-text text-[11.5px] font-nissan-bold tracking-[0.2px] text-[#111111] dark:text-neutral-100 hover:text-[#c3002f] dark:hover:text-[#ff3b5c] py-1.5 px-3 cursor-pointer whitespace-nowrap shrink-0"
               >
                 Check EMI
               </button>
@@ -336,7 +337,7 @@ export const Header: React.FC<HeaderProps> = ({
               <button
                 id="nav-brochure-btn"
                 onClick={onOpenBrochure}
-                className="btn-mui-text text-[11.5px] font-nissan-bold tracking-[0.2px] text-[#111111] dark:text-neutral-100 hover:text-[#c3002f] dark:hover:text-[#ff3b5c] py-1 px-2.5 cursor-pointer whitespace-nowrap shrink-0"
+                className="btn-mui-text text-[11.5px] font-nissan-bold tracking-[0.2px] text-[#111111] dark:text-neutral-100 hover:text-[#c3002f] dark:hover:text-[#ff3b5c] py-1.5 px-3 cursor-pointer whitespace-nowrap shrink-0"
               >
                 Brochure
               </button>
@@ -344,16 +345,15 @@ export const Header: React.FC<HeaderProps> = ({
               <button
                 id="nav-dealers-btn"
                 onClick={onOpenDealer}
-                className="btn-mui-text text-[11.5px] font-nissan-bold tracking-[0.2px] text-[#111111] dark:text-neutral-100 hover:text-[#c3002f] dark:hover:text-[#ff3b5c] py-1 px-2.5 cursor-pointer whitespace-nowrap shrink-0"
+                className="btn-mui-text text-[11.5px] font-nissan-bold tracking-[0.2px] text-[#111111] dark:text-neutral-100 hover:text-[#c3002f] dark:hover:text-[#ff3b5c] py-1.5 px-3 cursor-pointer whitespace-nowrap shrink-0"
               >
                 Dealers
               </button>
             </nav>
-          </div>
 
-          {/* Action CTAs - Desktop only (XL: 1280px+) - Focused, no mode change button on menubar */}
-          <div className="hidden xl:flex items-center shrink-0">
-            {/* Book Online CTA */}
+            <span className="h-5 w-px bg-neutral-200 dark:bg-neutral-800 shrink-0" />
+
+            {/* Book Online CTA - directly adjacent with balanced spacing */}
             <button
               id="header-cta-book"
               onClick={onOpenTestDrive}
