@@ -9,6 +9,9 @@ router.get('/', vehicleController.getVehicles);
 // GET /api/v1/vehicles/compare?v1=TEKTON&v2=MAGNITE
 router.get('/compare', vehicleController.compare);
 
+// GET /api/v1/vehicles/image-proxy?url=...
+router.get('/image-proxy', vehicleController.proxyImage);
+
 // GET /api/v1/vehicles/:id
 router.get('/:id', vehicleController.getVehicleById);
 

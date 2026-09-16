@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { X, FileDown, CheckCircle2, Download, Printer } from 'lucide-react';
+import { X, FileDown, CheckCircle2, Download, Loader2, FileText, Image as ImageIcon } from 'lucide-react';
 import { CAR_MODELS } from '../data/nissanData';
 import { apiSubmitLead } from '../services/apiClient.ts';
+import { generateVehicleBrochurePDF } from '../utils/brochurePdfGenerator.ts';
 
 interface BrochureModalProps {
   initialCarId?: string;
@@ -18,6 +19,7 @@ export const BrochureModal: React.FC<BrochureModalProps> = ({
 }) => {
   const [selectedCarId, setSelectedCarId] = useState<string>(initialCarId || CAR_MODELS[0].id);
   const [downloadSuccess, setDownloadSuccess] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
 
   React.useEffect(() => {
     if (initialCarId) {
@@ -29,28 +31,27 @@ export const BrochureModal: React.FC<BrochureModalProps> = ({
 
   const selectedCar = CAR_MODELS.find((c) => c.id === selectedCarId) || CAR_MODELS[0];
 
-  const handleDownload = () => {
-    setDownloadSuccess(true);
+  const handleDownload = async () => {
+    try {
+      setIsGenerating(true);
+      setDownloadSuccess(false);
 
-    // Asynchronously log brochure download lead into backend MongoDB
-    apiSubmitLead({
-      leadType: 'brochure_download',
-      vehicleModel: selectedCar.name,
-      vehicleModelCode: selectedCar.id.replace('nissan-', '').toUpperCase(),
-      message: `Customer downloaded digital brochure for ${selectedCar.name}`,
-    });
+      // Asynchronously log brochure download lead into backend MongoDB
+      apiSubmitLead({
+        leadType: 'brochure_download',
+        vehicleModel: selectedCar.name,
+        vehicleModelCode: selectedCar.id.replace('nissan-', '').toUpperCase(),
+        message: `Customer downloaded official PDF brochure with images for ${selectedCar.name}`,
+      });
 
-    setTimeout(() => {
-      // Simulate file download
-      const blob = new Blob([
-        `Nissan India Official Specifications Brochure\nModel: ${selectedCar.name}\nTagline: ${selectedCar.tagline}\nStarting Price: ${selectedCar.priceDisplay}\nEngine: ${selectedCar.engine}\nMileage: ${selectedCar.mileage}\nSafety: ${selectedCar.safetyRating}\nGround Clearance: ${selectedCar.groundClearance}\n\nOfficial Website: https://www.nissan.in`
-      ], { type: 'text/plain;charset=utf-8' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `Nissan_${selectedCar.name.replace(/\s+/g, '_')}_Brochure.txt`;
-      link.click();
-    }, 400);
+      // Generate official PDF with embedded car image and full specifications
+      await generateVehicleBrochurePDF(selectedCar);
+      setDownloadSuccess(true);
+    } catch (err) {
+      console.error('Failed to generate brochure PDF:', err);
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   return (
@@ -125,14 +126,22 @@ export const BrochureModal: React.FC<BrochureModalProps> = ({
             </div>
 
             <div className="w-full md:w-1/2 space-y-3">
-              <div className="text-[12px] font-nissan-bold text-[#c3002f] uppercase tracking-wider">
-                COMPREHENSIVE BUYER GUIDE
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-[#c3002f]/10 text-[#c3002f] text-[10px] font-nissan-bold tracking-wider uppercase border border-[#c3002f]/20">
+                  <FileText className="w-3 h-3" />
+                  OFFICIAL PDF FORMAT
+                </span>
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-neutral-200 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 text-[10px] font-nissan-bold tracking-wider uppercase">
+                  <ImageIcon className="w-3 h-3" />
+                  WITH VEHICLE IMAGERY
+                </span>
               </div>
+
               <h3 className="text-[22px] font-nissan-bold text-[#111111] dark:text-white">
-                {selectedCar.name} Technical E-Brochure
+                {selectedCar.name} Technical E-Brochure (PDF)
               </h3>
               <p className="text-[13px] text-[#555555] dark:text-[#b0b0b0] font-nissan-regular">
-                Includes full technical specifications, variant-wise standard equipment, exterior color palettes, warranty details, and genuine accessories portfolio.
+                High-resolution 2-page document containing authentic exterior photography, variant equipment comparisons, full technical specifications, and Tara Nissan Motihari showroom support.
               </p>
 
               <div className="space-y-1.5 text-[12px] text-[#333333] dark:text-[#cccccc] pt-2 border-t border-gray-200 dark:border-[#282828]">
@@ -154,17 +163,29 @@ export const BrochureModal: React.FC<BrochureModalProps> = ({
                 <button
                   id="download-brochure-submit-btn"
                   onClick={handleDownload}
-                  className="btn-nissan-primary w-full justify-center text-[13px] py-3"
+                  disabled={isGenerating}
+                  className={`btn-nissan-primary w-full justify-center text-[13px] py-3 cursor-pointer ${
+                    isGenerating ? 'opacity-80 cursor-wait' : ''
+                  }`}
                 >
-                  <Download className="w-4 h-4" />
-                  <span>DOWNLOAD INSTANT E-BROCHURE</span>
+                  {isGenerating ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <span>GENERATING OFFICIAL PDF WITH IMAGES...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Download className="w-4 h-4" />
+                      <span>DOWNLOAD OFFICIAL PDF BROCHURE</span>
+                    </>
+                  )}
                 </button>
               </div>
 
               {downloadSuccess && (
                 <div className="p-2.5 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/50 text-[12px] flex items-center gap-2 font-nissan-bold">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                  <span>Brochure package prepared and downloaded successfully!</span>
+                  <span>Official {selectedCar.name} PDF brochure with vehicle images downloaded successfully!</span>
                 </div>
               )}
             </div>

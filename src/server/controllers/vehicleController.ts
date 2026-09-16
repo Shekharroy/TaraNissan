@@ -55,6 +55,29 @@ export class VehicleController {
       next(err);
     }
   }
+
+  async proxyImage(req: Request, res: Response, next: NextFunction) {
+    try {
+      const url = req.query.url as string;
+      if (!url || (!url.startsWith('https://www.nissan.in') && !url.startsWith('https://libs-asia.nissan-cdn.net'))) {
+        res.status(400).json({ success: false, message: 'Valid Nissan image URL required' });
+        return;
+      }
+      const response = await fetch(url);
+      if (!response.ok) {
+        res.status(response.status).json({ success: false, message: 'Failed to fetch image' });
+        return;
+      }
+      const contentType = response.headers.get('content-type') || 'image/jpeg';
+      const buffer = await response.arrayBuffer();
+      res.setHeader('Content-Type', contentType);
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.setHeader('Cache-Control', 'public, max-age=86400');
+      res.send(Buffer.from(buffer));
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 export const vehicleController = new VehicleController();
